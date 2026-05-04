@@ -1,143 +1,635 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Reading Room</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg: #fafafa;
-            --text: #1a1a1a;
-            --accent: #3b82f6;
-        }
-        body {
-            background: var(--bg);
-            color: var(--text);
-            font-family: 'Inter', sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            margin: 0;
-            text-align: center;
-        }
-        h1 {
-            font-family: 'Playfair Display', serif;
-            font-size: 3rem;
-            margin-bottom: 0.5rem;
-            font-style: italic;
-        }
-        #counter {
-            font-size: 0.9rem;
-            opacity: 0.6;
-            margin-bottom: 2rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        .status {
-            font-size: 1.2rem;
-            margin-bottom: 2rem;
-            font-weight: 500;
-        }
-        .button-group {
-            display: flex;
-            gap: 15px;
-        }
-        button {
-            padding: 12px 24px;
-            border-radius: 8px;
-            border: none;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 1rem;
-            transition: all 0.2s;
-        }
-        .btn-main {
-            background: var(--text);
-            color: white;
-        }
-        .btn-main:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
-        .btn-alt {
-            background: transparent;
-            border: 1px solid #ddd;
-            color: var(--text);
-        }
-        .btn-alt:hover { background: #f0f0f0; }
-    </style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Reading Room</title>
+  <meta name="color-scheme" content="dark light" />
+  <style>
+    :root{
+      --bg:#0b0d12;
+      --panel:#111522;
+      --panel2:#0f1320;
+      --text:#e8ecf3;
+      --muted:#a8b0c2;
+      --faint:#6c7590;
+      --line:#1e263a;
+      --accent:#8ab4ff;
+      --good:#7ee787;
+      --warn:#ffcc66;
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --radius:16px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      background:
+        radial-gradient(1000px 700px at 15% -10%, rgba(138,180,255,.18), transparent 60%),
+        radial-gradient(900px 600px at 95% 10%, rgba(126,231,135,.12), transparent 55%),
+        radial-gradient(800px 600px at 50% 120%, rgba(255,204,102,.09), transparent 55%),
+        var(--bg);
+      color:var(--text);
+      min-height:100vh;
+    }
+    a{color:inherit}
+    .wrap{max-width:1200px;margin:0 auto;padding:22px}
+    header{
+      display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:18px
+    }
+    .brand{
+      display:flex;flex-direction:column;gap:6px
+    }
+    .title{
+      font-size:28px;letter-spacing:.2px;font-weight:750;line-height:1.1
+    }
+    .subtitle{
+      color:var(--muted);font-size:13px
+    }
+    .kbd{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size:12px;color:var(--muted);
+      padding:6px 10px;border:1px solid var(--line);border-radius:999px;background:rgba(17,21,34,.7)
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: 1.25fr .95fr;
+      gap:16px;
+    }
+    @media (max-width: 980px){
+      .grid{grid-template-columns:1fr}
+    }
+
+    .card{
+      background:linear-gradient(180deg, rgba(17,21,34,.92), rgba(15,19,32,.92));
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      overflow:hidden;
+    }
+    .cardHead{
+      padding:16px 16px 12px 16px;
+      border-bottom:1px solid var(--line);
+      display:flex;align-items:center;justify-content:space-between;gap:12px
+    }
+    .cardTitle{
+      display:flex;flex-direction:column;gap:4px
+    }
+    .cardTitle h2{
+      margin:0;font-size:16px;font-weight:700;letter-spacing:.2px
+    }
+    .cardTitle .hint{color:var(--muted);font-size:12px}
+    .pill{
+      font-size:12px;color:var(--muted);
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.03);
+      padding:6px 10px;border-radius:999px;white-space:nowrap
+    }
+
+    .feature{
+      padding:18px 16px;
+      display:flex;flex-direction:column;gap:14px
+    }
+    .sourceName{
+      font-size:22px;font-weight:800;letter-spacing:.2px;margin:0
+    }
+    .sourceDesc{margin:0;color:var(--muted);font-size:14px;line-height:1.45}
+    .row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+    .btn{
+      appearance:none;border:1px solid var(--line);
+      background:rgba(255,255,255,.04);
+      color:var(--text);
+      padding:10px 12px;border-radius:12px;
+      cursor:pointer;font-weight:650;
+      display:inline-flex;align-items:center;gap:8px;
+      transition:transform .08s ease, background .12s ease, border-color .12s ease;
+      user-select:none;
+    }
+    .btn:hover{background:rgba(255,255,255,.06);border-color:#2a3552}
+    .btn:active{transform:translateY(1px)}
+    .btnPrimary{
+      background:linear-gradient(180deg, rgba(138,180,255,.22), rgba(138,180,255,.10));
+      border-color:rgba(138,180,255,.35);
+    }
+    .btnPrimary:hover{border-color:rgba(138,180,255,.55)}
+    .btnDanger{
+      background:linear-gradient(180deg, rgba(255,80,80,.18), rgba(255,80,80,.08));
+      border-color:rgba(255,80,80,.35);
+    }
+
+    .meta{
+      display:flex;gap:10px;flex-wrap:wrap;
+      color:var(--muted);font-size:12px
+    }
+    .dot{opacity:.55}
+
+    .settings{
+      padding:14px 16px;
+      border-top:1px solid var(--line);
+      display:flex;flex-direction:column;gap:10px
+    }
+    .settingRow{
+      display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap
+    }
+    .settingRow label{display:flex;gap:10px;align-items:center;color:var(--muted);font-size:13px}
+    .settingRow input[type="checkbox"]{width:18px;height:18px;accent-color:var(--accent)}
+    .settingRow input[type="range"]{width:220px}
+    .settingRow .value{color:var(--text);font-weight:700}
+    .small{color:var(--faint);font-size:12px;line-height:1.35}
+
+    .previewWrap{
+      padding:0;
+    }
+    .previewFrameWrap{
+      height:520px;
+      background:#070911;
+      position:relative;
+    }
+    @media (max-width: 980px){
+      .previewFrameWrap{height:420px}
+    }
+    iframe{
+      width:100%;height:100%;
+      border:0;
+      background:#070911;
+    }
+    .previewOverlay{
+      position:absolute;inset:0;
+      display:flex;flex-direction:column;justify-content:flex-end;
+      pointer-events:none;
+      padding:14px;
+      background:linear-gradient(180deg, transparent 45%, rgba(0,0,0,.55));
+    }
+    .previewNote{
+      pointer-events:auto;
+      display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(10,12,18,.72);
+      backdrop-filter: blur(8px);
+      padding:10px 12px;border-radius:14px;
+      color:var(--muted);font-size:12px;
+    }
+    .previewNote strong{color:var(--text)}
+    .rightCol .list{
+      padding:10px;
+      display:flex;flex-direction:column;gap:10px
+    }
+    .item{
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.03);
+      border-radius:14px;
+      padding:12px;
+      cursor:pointer;
+      transition: background .12s ease, border-color .12s ease;
+    }
+    .item:hover{background:rgba(255,255,255,.05);border-color:#2a3552}
+    .itemTop{
+      display:flex;align-items:center;justify-content:space-between;gap:10px
+    }
+    .itemName{font-weight:750}
+    .itemDesc{margin:6px 0 0 0;color:var(--muted);font-size:12.5px;line-height:1.35}
+    .tag{
+      font-size:11px;color:var(--muted);
+      border:1px solid var(--line);
+      padding:4px 8px;border-radius:999px;white-space:nowrap
+    }
+    footer{
+      margin-top:14px;color:var(--faint);font-size:12px;line-height:1.4
+    }
+  </style>
 </head>
+
 <body>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <div class="title">Reading Room</div>
+        <div class="subtitle">A calmer new tab: choose something good, then go.</div>
+      </div>
+      <div class="kbd">Keys: <strong>N</strong> next · <strong>O</strong> open · <strong>P</strong> toggle preview</div>
+    </header>
 
-    <h1>Reading Room</h1>
-    <div id="counter">Today's Streak: <span id="count">0</span></div>
-    
-    <div class="status" id="status-text">Finding something mind-blowing...</div>
+    <div class="grid">
+      <!-- Left: Featured + settings -->
+      <section class="card">
+        <div class="cardHead">
+          <div class="cardTitle">
+            <h2>Featured source</h2>
+            <div class="hint" id="status">Picking something interesting…</div>
+          </div>
+          <div class="pill" id="todayCount">Today: 0 opened</div>
+        </div>
 
-    <div class="button-group">
-        <button id="open-btn" class="btn-main">Open Story</button>
-        <button id="refresh-btn" class="btn-alt">Try Another</button>
+        <div class="feature">
+          <h1 class="sourceName" id="sourceName">—</h1>
+          <p class="sourceDesc" id="sourceDesc">—</p>
+
+          <div class="row">
+            <button class="btn btnPrimary" id="openBtn" title="Open now (O)">Open now</button>
+            <button class="btn" id="nextBtn" title="Next pick (N)">Next</button>
+            <button class="btn btnDanger" id="cancelBtn" style="display:none">Cancel auto-open</button>
+          </div>
+
+          <div class="meta">
+            <span id="autoLine">Auto-open: —</span>
+            <span class="dot">•</span>
+            <span>Mode: <span id="modeLine">Non-repeating</span></span>
+          </div>
+        </div>
+
+        <div class="settings">
+          <div class="settingRow">
+            <label>
+              <input type="checkbox" id="autoOpenToggle" />
+              Auto-open after <span class="value"><span id="delayLabel">1.5</span>s</span>
+            </label>
+            <input type="range" id="delayRange" min="0.5" max="6" step="0.5" />
+          </div>
+
+          <div class="settingRow">
+            <label>
+              <input type="checkbox" id="previewToggle" />
+              Show preview pane (iframe)
+            </label>
+            <span class="tag" id="previewTag">Preview ON</span>
+          </div>
+
+          <div class="small">
+            If the preview looks blank for some sites, they block embedding. That’s normal—use <strong>Open now</strong>.
+          </div>
+        </div>
+      </section>
+
+      <!-- Right: Preview + list -->
+      <aside class="card rightCol">
+        <div class="cardHead">
+          <div class="cardTitle">
+            <h2>Preview</h2>
+            <div class="hint">A quick glance before you commit.</div>
+          </div>
+          <div class="pill" id="pickedLabel">—</div>
+        </div>
+
+        <div class="previewWrap">
+          <div class="previewFrameWrap" id="previewFrameWrap">
+            <iframe id="previewFrame" title="Preview"></iframe>
+            <div class="previewOverlay">
+              <div class="previewNote">
+                <div>
+                  <strong id="previewStrong">Tip:</strong>
+                  <span id="previewNoteText">Use Next to roll again. Auto-open will run if enabled.</span>
+                </div>
+                <div style="display:flex;gap:8px;flex-wrap:wrap">
+                  <button class="btn" id="togglePreviewBtn" style="pointer-events:auto">Toggle preview</button>
+                  <button class="btn btnPrimary" id="openBtn2" style="pointer-events:auto">Open</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="list" id="list"></div>
+        </div>
+      </aside>
     </div>
 
-    <script>
-        const sites = [
-            { name: "Atlas Obscura", url: "https://www.atlasobscura.com/random" }, // Opens a random weird place
-            { name: "The Marginalian", url: "https://www.themarginalian.org/" },
-            { name: "Aeon", url: "https://aeon.co/" },
-            { name: "Nautilus", url: "https://nautil.us/" },
-            { name: "Farnam Street", url: "https://fs.blog/blog/" },
-            { name: "The Pudding", url: "https://pudding.cool/" },
-            { name: "Reddit: Internet is Beautiful", url: "https://www.reddit.com/r/InternetIsBeautiful/" },
-            { name: "The Millions", url: "https://themillions.com/" },
-            { name: "Longform", url: "https://longform.org/" }, 
-            { name: "The Good News Network", url: "https://www.goodnewsnetwork.org/"}
-        ];
+    <footer>
+      Pro move: put this icon where Instagram used to be (phone home screen) and make the habit effortless.
+    </footer>
+  </div>
 
-        let currentSite;
+<script>
+  // --- Sources (includes Good News Network as requested) ---
+  const sources = [
+    {
+      name: "Good News Network",
+      url: "https://www.goodnewsnetwork.org/",
+      desc: "A quick hit of optimism: uplifting stories and positive headlines."
+    },
+    {
+      name: "Atlas Obscura",
+      url: "https://www.atlasobscura.com/",
+      desc: "Strange places, curious history, and delightful rabbit holes."
+    },
+    {
+      name: "The Marginalian",
+      url: "https://www.themarginalian.org/",
+      desc: "Timeless essays connecting art, science, philosophy, and life."
+    },
+    {
+      name: "Aeon",
+      url: "https://aeon.co/",
+      desc: "Big ideas in philosophy, psychology, culture, and science."
+    },
+    {
+      name: "Nautilus",
+      url: "https://nautil.us/",
+      desc: "Science meets story; thoughtful long-form and big questions."
+    },
+    {
+      name: "Farnam Street",
+      url: "https://fs.blog/",
+      desc: "Mental models and better thinking, without the fluff."
+    },
+    {
+      name: "The Pudding",
+      url: "https://pudding.cool/",
+      desc: "Data-driven essays that feel like interactive mini-documentaries."
+    },
+    {
+      name: "The Millions",
+      url: "https://themillions.com/",
+      desc: "Books, culture, and smart literary conversations."
+    },
+    {
+      name: "Reddit: Internet Is Beautiful",
+      url: "https://www.reddit.com/r/InternetIsBeautiful/",
+      desc: "A stream of genuinely interesting corners of the web."
+    }
+  ];
 
-        function pickSite() {
-            currentSite = sites[Math.floor(Math.random() * sites.length)];
-            document.getElementById('status-text').innerText = `Next up: ${currentSite.name}`;
+  // --- State / settings ---
+  const LS = {
+    bag: "rr_bag_v1",
+    bagDate: "rr_bag_date_v1",
+    todayDate: "rr_today_date_v1",
+    todayCount: "rr_today_count_v1",
+    autoOn: "rr_auto_on_v1",
+    delay: "rr_delay_v1",
+    previewOn: "rr_preview_on_v1"
+  };
+
+  const els = {
+    status: document.getElementById("status"),
+    todayCount: document.getElementById("todayCount"),
+    sourceName: document.getElementById("sourceName"),
+    sourceDesc: document.getElementById("sourceDesc"),
+    pickedLabel: document.getElementById("pickedLabel"),
+    autoLine: document.getElementById("autoLine"),
+    modeLine: document.getElementById("modeLine"),
+    openBtn: document.getElementById("openBtn"),
+    openBtn2: document.getElementById("openBtn2"),
+    nextBtn: document.getElementById("nextBtn"),
+    cancelBtn: document.getElementById("cancelBtn"),
+    autoOpenToggle: document.getElementById("autoOpenToggle"),
+    delayRange: document.getElementById("delayRange"),
+    delayLabel: document.getElementById("delayLabel"),
+    previewToggle: document.getElementById("previewToggle"),
+    previewTag: document.getElementById("previewTag"),
+    previewFrame: document.getElementById("previewFrame"),
+    previewFrameWrap: document.getElementById("previewFrameWrap"),
+    togglePreviewBtn: document.getElementById("togglePreviewBtn"),
+    list: document.getElementById("list")
+  };
+
+  let current = null;
+  let timer = null;
+  let countdownInterval = null;
+
+  function todayKey(){
+    return new Date().toDateString();
+  }
+
+  function getTodayCount(){
+    const d = localStorage.getItem(LS.todayDate);
+    const t = todayKey();
+    if (d !== t){
+      localStorage.setItem(LS.todayDate, t);
+      localStorage.setItem(LS.todayCount, "0");
+    }
+    return parseInt(localStorage.getItem(LS.todayCount) || "0", 10);
+  }
+
+  function incTodayCount(){
+    const c = getTodayCount() + 1;
+    localStorage.setItem(LS.todayCount, String(c));
+    renderTodayCount();
+  }
+
+  function renderTodayCount(){
+    els.todayCount.textContent = `Today: ${getTodayCount()} opened`;
+  }
+
+  function shuffle(arr){
+    for (let i = arr.length - 1; i > 0; i--){
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+  }
+
+  // Non-repeating "shuffle bag" so you don't see the same source repeatedly.
+  function getBag(){
+    const storedDate = localStorage.getItem(LS.bagDate);
+    const t = todayKey();
+    let bag = [];
+    try { bag = JSON.parse(localStorage.getItem(LS.bag) || "[]"); } catch { bag = []; }
+
+    // Refresh bag daily, or if empty/invalid
+    if (storedDate !== t || !Array.isArray(bag) || bag.length === 0){
+      bag = shuffle(sources.map((_, idx) => idx));
+      localStorage.setItem(LS.bag, JSON.stringify(bag));
+      localStorage.setItem(LS.bagDate, t);
+    }
+    return bag;
+  }
+
+  function popFromBag(){
+    const bag = getBag();
+    const idx = bag.pop();
+    localStorage.setItem(LS.bag, JSON.stringify(bag));
+    return sources[idx];
+  }
+
+  function setPreviewEnabled(on){
+    localStorage.setItem(LS.previewOn, on ? "1" : "0");
+    els.previewToggle.checked = on;
+    els.previewTag.textContent = on ? "Preview ON" : "Preview OFF";
+    els.previewFrameWrap.style.display = on ? "block" : "none";
+  }
+
+  function setAutoEnabled(on){
+    localStorage.setItem(LS.autoOn, on ? "1" : "0");
+    els.autoOpenToggle.checked = on;
+  }
+
+  function setDelay(seconds){
+    localStorage.setItem(LS.delay, String(seconds));
+    els.delayRange.value = String(seconds);
+    els.delayLabel.textContent = String(seconds);
+  }
+
+  function getDelay(){
+    const v = parseFloat(localStorage.getItem(LS.delay) || "5");
+    return isNaN(v) ? 5 : v;
+  }
+
+  function getAutoEnabled(){
+    return (localStorage.getItem(LS.autoOn) || "0") === "1";
+  }
+
+  function getPreviewEnabled(){
+    const v = localStorage.getItem(LS.previewOn);
+    return v === null ? true : v === "1";
+  }
+
+  function clearTimers(){
+    if (timer) clearTimeout(timer);
+    timer = null;
+    if (countdownInterval) clearInterval(countdownInterval);
+    countdownInterval = null;
+    els.cancelBtn.style.display = "none";
+  }
+
+  function setCurrent(source){
+    clearTimers();
+    current = source;
+
+    els.sourceName.textContent = source.name;
+    els.sourceDesc.textContent = source.desc;
+    els.pickedLabel.textContent = source.name;
+    els.status.textContent = "Ready.";
+    renderList();
+
+    const previewOn = getPreviewEnabled();
+    if (previewOn){
+      // Load preview. Some sites block embedding; if blank, user can still Open.
+      els.previewFrame.src = source.url;
+    } else {
+      els.previewFrame.src = "about:blank";
+    }
+
+    scheduleAutoOpenIfEnabled();
+  }
+
+  function openCurrent(){
+    if (!current) return;
+    incTodayCount();
+    // Replace the tab (feels instant for New Tab usage)
+    window.location.href = current.url;
+  }
+
+  function scheduleAutoOpenIfEnabled(){
+    const on = getAutoEnabled();
+    const delay = getDelay();
+
+    if (!on){
+      els.autoLine.textContent = "Auto-open: off";
+      return;
+    }
+
+    let remaining = delay;
+    els.autoLine.textContent = `Auto-open: in ${remaining.toFixed(1)}s`;
+    els.cancelBtn.style.display = "inline-flex";
+
+    countdownInterval = setInterval(() => {
+      remaining = Math.max(0, remaining - 0.1);
+      els.autoLine.textContent = `Auto-open: in ${remaining.toFixed(1)}s`;
+      if (remaining <= 0){
+        clearInterval(countdownInterval);
+        countdownInterval = null;
+      }
+    }, 100);
+
+    timer = setTimeout(() => {
+      timer = null;
+      openCurrent();
+    }, delay * 1000);
+  }
+
+  function nextPick(){
+    els.status.textContent = "Picking something interesting…";
+    const picked = popFromBag();
+    setCurrent(picked);
+  }
+
+  function renderList(){
+    els.list.innerHTML = "";
+    sources.forEach((s) => {
+      const div = document.createElement("div");
+      div.className = "item";
+      div.tabIndex = 0;
+      div.innerHTML = `
+        <div class="itemTop">
+          <div class="itemName">${escapeHtml(s.name)}</div>
+          <span class="tag">${s === current ? "Selected" : "Pick"}</span>
+        </div>
+        <p class="itemDesc">${escapeHtml(s.desc)}</p>
+      `;
+      div.addEventListener("click", () => setCurrent(s));
+      div.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " "){
+          e.preventDefault();
+          setCurrent(s);
         }
+      });
+      els.list.appendChild(div);
+    });
+  }
 
-        function updateStreak() {
-            let streak = parseInt(localStorage.getItem('read_streak') || '0');
-            // Check if last read was today
-            const lastRead = localStorage.getItem('last_read_date');
-            const today = new Date().toDateString();
-            
-            if (lastRead === today) {
-                // Keep the current count
-            } else {
-                // If it's a new day, streak is usually 0 unless you want total counts
-                // For now, let's just make it a "Read Today" counter
-                streak = 0;
-            }
-            document.getElementById('count').innerText = streak;
-        }
+  function escapeHtml(str){
+    return String(str).replace(/[&<>"']/g, (m) => ({
+      "&":"&amp;","<​":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+    }[m]));
+  }
 
-        function openSite() {
-            let streak = parseInt(localStorage.getItem('read_streak') || '0');
-            localStorage.setItem('read_streak', streak + 1);
-            localStorage.setItem('last_read_date', new Date().toDateString());
-            window.location.href = currentSite.url;
-        }
+  // --- Wire up UI ---
+  els.openBtn.addEventListener("click", openCurrent);
+  els.openBtn2.addEventListener("click", openCurrent);
+  els.nextBtn.addEventListener("click", nextPick);
+  els.cancelBtn.addEventListener("click", () => {
+    clearTimers();
+    els.autoLine.textContent = "Auto-open: cancelled";
+  });
 
-        document.getElementById('open-btn').addEventListener('click', openSite);
-        document.getElementById('refresh-btn').addEventListener('click', pickSite);
+  els.autoOpenToggle.addEventListener("change", (e) => {
+    setAutoEnabled(e.target.checked);
+    scheduleAutoOpenIfEnabled();
+  });
 
-        // Run on load
-        // Run on load
-        pickSite();
-        updateStreak();
+  els.delayRange.addEventListener("input", (e) => {
+    setDelay(parseFloat(e.target.value));
+    scheduleAutoOpenIfEnabled();
+  });
 
-        // auto-open after a short delay
-        // setTimeout(openSite, 1500);
+  els.previewToggle.addEventListener("change", (e) => {
+    setPreviewEnabled(e.target.checked);
+    if (!e.target.checked) els.previewFrame.src = "about:blank";
+    else if (current) els.previewFrame.src = current.url;
+  });
 
-        // Auto-redirect after 3 seconds if you want it to be hands-off:
-        setTimeout(openSite, 1500); 
-    </script>
+  els.togglePreviewBtn.addEventListener("click", () => {
+    const on = !getPreviewEnabled();
+    setPreviewEnabled(on);
+    if (on && current) els.previewFrame.src = current.url;
+    if (!on) els.previewFrame.src = "about:blank";
+  });
+
+  // Keyboard shortcuts
+  document.addEventListener("keydown", (e) => {
+    // Don't steal focus if typing in an input (we only have range/checkboxes, but keep it safe)
+    const tag = (e.target && e.target.tagName) ? e.target.tagName.toLowerCase() : "";
+    if (tag === "input" || tag === "textarea") return;
+
+    if (e.key.toLowerCase() === "n") nextPick();
+    if (e.key.toLowerCase() === "o") openCurrent();
+    if (e.key.toLowerCase() === "p") {
+      const on = !getPreviewEnabled();
+      setPreviewEnabled(on);
+      if (on && current) els.previewFrame.src = current.url;
+      if (!on) els.previewFrame.src = "about:blank";
+    }
+  });
+
+  // --- Init ---
+  renderTodayCount();
+  setDelay(getDelay());
+  setAutoEnabled(getAutoEnabled());
+  setPreviewEnabled(getPreviewEnabled());
+  els.modeLine.textContent = "Non-repeating";
+
+  // Start with a pick
+  nextPick();
+</script>
 </body>
 </html>
