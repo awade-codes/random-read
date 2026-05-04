@@ -32,13 +32,9 @@
       overflow-x:hidden;
     }
 
-    /* ── PAINT SPLASH BG ── */
-    .splash-bg{
-      position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;
-    }
+    .splash-bg{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
     .splash-bg svg{width:100%;height:100%}
 
-    /* ── LAYOUT ── */
     .wrap{max-width:1200px;margin:0 auto;padding:28px 22px;position:relative;z-index:1}
 
     header{
@@ -52,21 +48,14 @@
       color: var(--yellow);
       text-shadow: 3px 3px 0 var(--orange), 6px 6px 0 rgba(0,0,0,.3);
     }
-    .subtitle{
-      color:var(--muted);font-size:13px;font-weight:700;
-      letter-spacing:.5px;text-transform:uppercase;
-    }
+    .subtitle{color:var(--muted);font-size:13px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;}
     .kbd{
       font-size:12px;font-weight:800;color:var(--muted);
       padding:8px 14px;border:2px solid var(--faint);border-radius:999px;
       background:rgba(255,255,255,.05);letter-spacing:.5px;
     }
 
-    .grid{
-      display:grid;
-      grid-template-columns:1.25fr .95fr;
-      gap:16px;
-    }
+    .grid{display:grid;grid-template-columns:1.25fr .95fr;gap:16px;}
     @media(max-width:980px){.grid{grid-template-columns:1fr}}
 
     .card{
@@ -77,16 +66,15 @@
       overflow:hidden;
       backdrop-filter:blur(4px);
     }
+    .card::before{content:'';display:block;height:3px;background:linear-gradient(90deg,var(--orange),var(--yellow),var(--teal));}
+
     .cardHead{
       padding:16px 18px 13px;
       border-bottom:1.5px solid var(--line);
       display:flex;align-items:center;justify-content:space-between;gap:12px;
       background:rgba(0,0,0,.2);
     }
-    .cardTitle h2{
-      font-family:'Bebas Neue',sans-serif;
-      font-size:20px;letter-spacing:1.5px;color:var(--yellow);
-    }
+    .cardTitle h2{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:1.5px;color:var(--yellow);}
     .cardTitle .hint{color:var(--muted);font-size:12px;font-weight:700;margin-top:3px;letter-spacing:.3px}
     .pill{
       font-size:11px;font-weight:800;color:var(--orange);
@@ -114,8 +102,7 @@
       font-family:'Nunito',sans-serif;letter-spacing:.5px;
       display:inline-flex;align-items:center;gap:8px;
       transition:transform .1s ease, box-shadow .1s ease, background .1s ease;
-      user-select:none;
-      text-transform:uppercase;
+      user-select:none;text-transform:uppercase;
     }
     .btn:hover{background:rgba(255,255,255,.12);transform:translateY(-2px);box-shadow:0 6px 16px rgba(0,0,0,.3)}
     .btn:active{transform:translateY(1px)}
@@ -155,25 +142,42 @@
     }
     .small{color:var(--faint);font-size:12px;line-height:1.4;font-weight:600}
 
-    .previewFrameWrap{height:500px;background:#071820;position:relative;}
-    @media(max-width:980px){.previewFrameWrap{height:360px}}
-    iframe{width:100%;height:100%;border:0}
-    .previewOverlay{
-      position:absolute;inset:0;
-      display:flex;flex-direction:column;justify-content:flex-end;
-      pointer-events:none;padding:14px;
-      background:linear-gradient(180deg,transparent 50%,rgba(7,24,32,.75));
+    /* Preview pane */
+    .previewWrap{
+      position:relative;
+      height:320px;
+      background:rgba(0,0,0,.3);
+      overflow:hidden;
     }
-    .previewNote{
-      pointer-events:auto;
-      display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;
-      border:1.5px solid rgba(255,255,255,.15);
-      background:rgba(7,24,32,.82);
-      backdrop-filter:blur(10px);
-      padding:10px 14px;border-radius:12px;
-      color:var(--muted);font-size:12px;font-weight:700;letter-spacing:.3px;
-    }
+    iframe{width:100%;height:100%;border:0;display:block;}
 
+    .previewFallback{
+      position:absolute;inset:0;
+      display:none;
+      flex-direction:column;
+      align-items:center;justify-content:center;
+      gap:14px;
+      text-align:center;
+      padding:24px;
+      background:linear-gradient(160deg,rgba(26,107,124,.25),rgba(7,24,32,.7));
+    }
+    .previewFallback.show{display:flex;}
+    .previewFallback .fallbackIcon{font-size:48px;}
+    .previewFallback .fallbackTitle{
+      font-family:'Bebas Neue',sans-serif;
+      font-size:22px;letter-spacing:1.5px;color:var(--yellow);
+    }
+    .previewFallback .fallbackSub{color:var(--muted);font-size:13px;font-weight:700;max-width:260px;line-height:1.5;}
+
+    .previewOverlay{
+      position:absolute;bottom:0;left:0;right:0;
+      padding:12px 14px;
+      background:linear-gradient(0deg,rgba(7,24,32,.9) 0%,transparent 100%);
+      display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;
+    }
+    .previewNote{color:var(--muted);font-size:12px;font-weight:700;letter-spacing:.3px;}
+
+    /* Source list */
     .list{padding:10px;display:flex;flex-direction:column;gap:8px}
     .item{
       border:1.5px solid rgba(255,255,255,.08);
@@ -191,60 +195,27 @@
       padding:3px 9px;border-radius:999px;
       background:rgba(255,255,255,.05);white-space:nowrap;letter-spacing:.5px;text-transform:uppercase;
     }
-    .itemTag.selected{
-      background:linear-gradient(135deg,var(--orange),#d4621a);
-      color:white;border-color:var(--orange);
-    }
+    .itemTag.selected{background:linear-gradient(135deg,var(--orange),#d4621a);color:white;border-color:var(--orange);}
 
-    footer{
-      margin-top:18px;color:var(--faint);font-size:12px;
-      font-weight:700;text-align:center;letter-spacing:.5px;text-transform:uppercase;
-    }
+    footer{margin-top:18px;color:var(--faint);font-size:12px;font-weight:700;text-align:center;letter-spacing:.5px;text-transform:uppercase;}
 
-    /* ── DECORATIVE SHAPES ── */
+    /* Deco shapes */
     .deco-layer{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:0}
-    .deco{
-      position:absolute;
-      animation:floaty 8s ease-in-out infinite;
-    }
+    .deco{position:absolute;animation:floaty 8s ease-in-out infinite;}
     .deco:nth-child(2){animation-delay:-2s;animation-duration:9s}
     .deco:nth-child(3){animation-delay:-4.5s;animation-duration:7s}
     .deco:nth-child(4){animation-delay:-1.5s;animation-duration:10s}
     .deco:nth-child(5){animation-delay:-3s;animation-duration:8.5s}
-    @keyframes floaty{
-      0%,100%{transform:translateY(0) rotate(0deg)}
-      33%{transform:translateY(-16px) rotate(4deg)}
-      66%{transform:translateY(9px) rotate(-3deg)}
-    }
 
-
-
-    /* ── ANIMATIONS ── */
-    @keyframes wiggle{
-      0%,100%{transform:rotate(0)}
-      20%{transform:rotate(-8deg)}50%{transform:rotate(8deg)}80%{transform:rotate(-4deg)}
-    }
-    @keyframes pop{
-      0%{transform:scale(1)}40%{transform:scale(1.1)}70%{transform:scale(.97)}100%{transform:scale(1)}
-    }
-    @keyframes slide-in{
-      0%{transform:translateX(-12px);opacity:0}100%{transform:translateX(0);opacity:1}
-    }
+    @keyframes floaty{0%,100%{transform:translateY(0) rotate(0deg)}33%{transform:translateY(-16px) rotate(4deg)}66%{transform:translateY(9px) rotate(-3deg)}}
+    @keyframes wiggle{0%,100%{transform:rotate(0)}20%{transform:rotate(-8deg)}50%{transform:rotate(8deg)}80%{transform:rotate(-4deg)}}
+    @keyframes pop{0%{transform:scale(1)}40%{transform:scale(1.1)}70%{transform:scale(.97)}100%{transform:scale(1)}}
+    @keyframes slide-in{0%{transform:translateX(-12px);opacity:0}100%{transform:translateX(0);opacity:1}}
     .wiggle{animation:wiggle .4s ease}
     .pop{animation:pop .3s ease}
     .slide-in{animation:slide-in .35s ease}
 
-    /* status */
-    #status{
-      display:inline-flex;align-items:center;gap:5px;
-      font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.3px;
-    }
-
-    /* accent line on card top */
-    .card::before{
-      content:'';display:block;height:3px;
-      background:linear-gradient(90deg,var(--orange),var(--yellow),var(--teal));
-    }
+    #status{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.3px;}
   </style>
 </head>
 <body>
@@ -252,52 +223,38 @@
 <!-- Paint splash background -->
 <div class="splash-bg" aria-hidden="true">
   <svg viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
-    <!-- Teal large blob top-left -->
     <ellipse cx="120" cy="120" rx="320" ry="260" fill="#1a6b7c" opacity=".18" transform="rotate(-20 120 120)"/>
-    <!-- Orange splash top-right -->
     <path d="M1200 0 Q1380 80 1440 200 Q1360 160 1280 220 Q1340 100 1200 0Z" fill="#e8832a" opacity=".22"/>
     <ellipse cx="1350" cy="180" rx="180" ry="120" fill="#e8832a" opacity=".12" transform="rotate(15 1350 180)"/>
-    <!-- Yellow blob mid-right -->
     <ellipse cx="1380" cy="500" rx="140" ry="200" fill="#f5c842" opacity=".1" transform="rotate(-10 1380 500)"/>
-    <!-- Teal blob bottom-left -->
     <ellipse cx="80" cy="780" rx="260" ry="180" fill="#1a6b7c" opacity=".15" transform="rotate(10 80 780)"/>
-    <!-- Orange bottom-right -->
     <path d="M1300 800 Q1440 820 1440 900 L1200 900Z" fill="#e8832a" opacity=".18"/>
-    <!-- Geometric squares (retro anime style) -->
     <rect x="60" y="300" width="60" height="60" fill="#f5c842" opacity=".08" transform="rotate(15 90 330)"/>
     <rect x="1300" y="350" width="45" height="45" fill="#1a6b7c" opacity=".12" transform="rotate(-20 1322 372)"/>
     <rect x="700" y="50" width="35" height="35" fill="#e8832a" opacity=".1" transform="rotate(30 717 67)"/>
-    <!-- Circles -->
     <circle cx="400" cy="820" r="80" fill="#f5c842" opacity=".07"/>
     <circle cx="1100" cy="100" r="60" fill="#1a6b7c" opacity=".1"/>
   </svg>
 </div>
 
-<!-- Floating geometric deco shapes -->
+<!-- Floating deco shapes -->
 <div class="deco-layer" aria-hidden="true">
-  <!-- Star -->
   <svg class="deco" style="left:6%;top:8%;width:42px;opacity:.55" viewBox="0 0 50 50" fill="none">
     <polygon points="25,3 30,18 46,18 33,28 38,44 25,34 12,44 17,28 4,18 20,18" fill="#f5c842" stroke="#e8832a" stroke-width="1.5"/>
   </svg>
-  <!-- Diamond -->
   <svg class="deco" style="left:88%;top:15%;width:36px;opacity:.45" viewBox="0 0 40 40" fill="none">
     <polygon points="20,2 38,20 20,38 2,20" fill="#1a6b7c" stroke="#8bbfcc" stroke-width="1.5"/>
   </svg>
-  <!-- Sparkle -->
   <svg class="deco" style="left:78%;top:60%;width:28px;opacity:.4" viewBox="0 0 40 40" fill="none">
     <path d="M20 2L22 18L38 20L22 22L20 38L18 22L2 20L18 18Z" fill="#f5c842" stroke="#e8832a" stroke-width="1"/>
   </svg>
-  <!-- Circle outline -->
   <svg class="deco" style="left:4%;top:68%;width:50px;opacity:.3" viewBox="0 0 50 50" fill="none">
     <circle cx="25" cy="25" r="22" stroke="#e8832a" stroke-width="2.5" fill="none"/>
   </svg>
-  <!-- Small square -->
   <svg class="deco" style="left:50%;top:4%;width:24px;opacity:.35" viewBox="0 0 30 30" fill="none">
     <rect x="3" y="3" width="24" height="24" rx="3" fill="#f5c842" opacity=".6" transform="rotate(20 15 15)"/>
   </svg>
 </div>
-
-
 
 <div class="wrap">
   <header>
@@ -322,33 +279,31 @@
       <div class="feature">
         <h1 class="sourceName" id="sourceName">—</h1>
         <p class="sourceDesc" id="sourceDesc">—</p>
-
         <div class="row">
-          <button class="btn btnPrimary" id="openBtn" title="Open now (O)">▶ OPEN NOW</button>
-          <button class="btn btnYellow" id="nextBtn" title="Next pick (N)">⟳ NEXT PICK</button>
+          <button class="btn btnPrimary" id="openBtn">▶ OPEN NOW</button>
+          <button class="btn btnYellow" id="nextBtn">⟳ NEXT PICK</button>
         </div>
-
         <div class="meta">
-          <span>⟳ MODE: <span id="modeLine">NON-REPEATING SHUFFLE</span></span>
+          <span>⟳ MODE: NON-REPEATING SHUFFLE</span>
         </div>
       </div>
 
       <div class="settings">
         <div class="settingRow">
           <label>
-            <input type="checkbox" id="previewToggle"/>
+            <input type="checkbox" id="previewToggle" checked/>
             ◈ SHOW PREVIEW PANE
           </label>
           <span class="tag" id="previewTag">PREVIEW ON</span>
         </div>
         <div class="small">
-          Some sites block embedding — that's normal. Hit <strong>OPEN NOW</strong> if the preview looks blank.
+          Some sites block embedding — a "mystery card" will show instead. Hit OPEN NOW to visit.
         </div>
       </div>
     </section>
 
     <!-- Right: Preview + list -->
-    <aside class="card rightCol">
+    <aside class="card">
       <div class="cardHead">
         <div class="cardTitle">
           <h2>PREVIEW</h2>
@@ -357,163 +312,275 @@
         <div class="pill" id="pickedLabel">—</div>
       </div>
 
-      <div>
-        <div class="previewFrameWrap" id="previewFrameWrap">
-          <iframe id="previewFrame" title="Preview"></iframe>
+      <div id="previewSection">
+        <div class="previewWrap" id="previewWrap">
+          <iframe id="previewFrame" title="Preview" sandbox="allow-scripts allow-same-origin allow-forms"></iframe>
+
+          <!-- Fallback shown when site blocks embedding -->
+          <div class="previewFallback" id="previewFallback">
+            <div class="fallbackIcon">📖</div>
+            <div class="fallbackTitle" id="fallbackName">—</div>
+            <div class="fallbackSub">This site doesn't allow previews — but it's worth the click!</div>
+            <button class="btn btnPrimary" id="openBtn3">▶ OPEN NOW</button>
+          </div>
+
           <div class="previewOverlay">
-            <div class="previewNote">
-              <div>◆ Roll until something sparks — then <strong>OPEN</strong></div>
-              <div style="display:flex;gap:8px;flex-wrap:wrap">
-                <button class="btn" id="togglePreviewBtn" style="pointer-events:auto">◈ TOGGLE</button>
-                <button class="btn btnPrimary" id="openBtn2" style="pointer-events:auto">▶ OPEN</button>
-              </div>
-            </div>
+            <div class="previewNote">Roll until something sparks, then OPEN ✦</div>
+            <button class="btn btnPrimary" id="openBtn2" style="padding:8px 14px;font-size:12px;">▶ OPEN</button>
           </div>
         </div>
-
-        <div class="list" id="list"></div>
       </div>
+
+      <div class="list" id="list"></div>
     </aside>
   </div>
 
-  <footer>
-    ✦ Built to make reading better than doomscrolling  ·  ✦ happy reading
-  </footer>
+  <footer>✦ Built to make reading better than doomscrolling  ·  ✦ happy reading</footer>
 </div>
 
 <script>
   const sources = [
-    { name: "Good News Network", url: "https://www.goodnewsnetwork.org/", desc: "A quick hit of optimism: uplifting stories and positive headlines." },
-    { name: "Atlas Obscura", url: "https://www.atlasobscura.com/", desc: "Strange places, curious history, and delightful rabbit holes." },
-    { name: "The Marginalian", url: "https://www.themarginalian.org/", desc: "Timeless essays connecting art, science, philosophy, and life." },
-    { name: "Aeon", url: "https://aeon.co/", desc: "Big ideas in philosophy, psychology, culture, and science." },
-    { name: "Nautilus", url: "https://nautil.us/", desc: "Science meets story; thoughtful long-form and big questions." },
-    { name: "Farnam Street", url: "https://fs.blog/", desc: "Mental models and better thinking, without the fluff." },
-    { name: "The Pudding", url: "https://pudding.cool/", desc: "Data-driven essays that feel like interactive mini-documentaries." },
-    { name: "The Millions", url: "https://themillions.com/", desc: "Books, culture, and smart literary conversations." },
+    { name: "Good News Network",        url: "https://www.goodnewsnetwork.org/",          desc: "A quick hit of optimism: uplifting stories and positive headlines." },
+    { name: "Atlas Obscura",            url: "https://www.atlasobscura.com/",             desc: "Strange places, curious history, and delightful rabbit holes." },
+    { name: "The Marginalian",          url: "https://www.themarginalian.org/",           desc: "Timeless essays connecting art, science, philosophy, and life." },
+    { name: "Aeon",                     url: "https://aeon.co/",                          desc: "Big ideas in philosophy, psychology, culture, and science." },
+    { name: "Nautilus",                 url: "https://nautil.us/",                        desc: "Science meets story; thoughtful long-form and big questions." },
+    { name: "Farnam Street",            url: "https://fs.blog/",                          desc: "Mental models and better thinking, without the fluff." },
+    { name: "The Pudding",              url: "https://pudding.cool/",                     desc: "Data-driven essays that feel like interactive mini-documentaries." },
+    { name: "The Millions",             url: "https://themillions.com/",                  desc: "Books, culture, and smart literary conversations." },
     { name: "Reddit: InternetIsBeautiful", url: "https://www.reddit.com/r/InternetIsBeautiful/", desc: "A stream of genuinely interesting corners of the web." }
   ];
 
-  const LS={bag:"rr_bag_v1",bagDate:"rr_bag_date_v1",todayDate:"rr_today_date_v1",todayCount:"rr_today_count_v1",previewOn:"rr_preview_on_v1"};
-  const els={
-    status:document.getElementById("status"),
-    todayCount:document.getElementById("todayCount"),
-    sourceName:document.getElementById("sourceName"),
-    sourceDesc:document.getElementById("sourceDesc"),
-    pickedLabel:document.getElementById("pickedLabel"),
-    modeLine:document.getElementById("modeLine"),
-    openBtn:document.getElementById("openBtn"),
-    openBtn2:document.getElementById("openBtn2"),
-    nextBtn:document.getElementById("nextBtn"),
-    previewToggle:document.getElementById("previewToggle"),
-    previewTag:document.getElementById("previewTag"),
-    previewFrame:document.getElementById("previewFrame"),
-    previewFrameWrap:document.getElementById("previewFrameWrap"),
-    togglePreviewBtn:document.getElementById("togglePreviewBtn"),
-    list:document.getElementById("list")
+  const LS = {
+    bag: "rr_bag_v1", bagDate: "rr_bag_date_v1",
+    todayDate: "rr_today_date_v1", todayCount: "rr_today_count_v1",
+    previewOn: "rr_preview_on_v1"
   };
-  let current=null;
 
-  function todayKey(){return new Date().toDateString()}
-  function getTodayCount(){
-    if(localStorage.getItem(LS.todayDate)!==todayKey()){
-      localStorage.setItem(LS.todayDate,todayKey());
-      localStorage.setItem(LS.todayCount,"0");
+  const els = {
+    status:        document.getElementById("status"),
+    todayCount:    document.getElementById("todayCount"),
+    sourceName:    document.getElementById("sourceName"),
+    sourceDesc:    document.getElementById("sourceDesc"),
+    pickedLabel:   document.getElementById("pickedLabel"),
+    openBtn:       document.getElementById("openBtn"),
+    openBtn2:      document.getElementById("openBtn2"),
+    openBtn3:      document.getElementById("openBtn3"),
+    nextBtn:       document.getElementById("nextBtn"),
+    previewToggle: document.getElementById("previewToggle"),
+    previewTag:    document.getElementById("previewTag"),
+    previewFrame:  document.getElementById("previewFrame"),
+    previewWrap:   document.getElementById("previewWrap"),
+    previewSection:document.getElementById("previewSection"),
+    previewFallback:document.getElementById("previewFallback"),
+    fallbackName:  document.getElementById("fallbackName"),
+    list:          document.getElementById("list")
+  };
+
+  let current = null;
+  let fallbackTimer = null;
+
+  function todayKey() { return new Date().toDateString(); }
+
+  function getTodayCount() {
+    if (localStorage.getItem(LS.todayDate) !== todayKey()) {
+      localStorage.setItem(LS.todayDate, todayKey());
+      localStorage.setItem(LS.todayCount, "0");
     }
-    return parseInt(localStorage.getItem(LS.todayCount)||"0",10);
+    return parseInt(localStorage.getItem(LS.todayCount) || "0", 10);
   }
-  function incTodayCount(){
-    localStorage.setItem(LS.todayCount,String(getTodayCount()+1));
+
+  function incTodayCount() {
+    localStorage.setItem(LS.todayCount, String(getTodayCount() + 1));
     renderTodayCount();
   }
-  function renderTodayCount(){
-    els.todayCount.textContent="◆ TODAY: "+getTodayCount()+" OPENED";
+
+  function renderTodayCount() {
+    els.todayCount.textContent = "◆ TODAY: " + getTodayCount() + " OPENED";
   }
-  function shuffle(arr){
-    for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]];}
-    return arr;
+
+  function shuffle(arr) {
+    const a = arr.slice();
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
   }
-  function getBag(){
-    let bag=[];
-    try{bag=JSON.parse(localStorage.getItem(LS.bag)||"[]");}catch{bag=[];}
-    if(localStorage.getItem(LS.bagDate)!==todayKey()||!Array.isArray(bag)||bag.length===0){
-      bag=shuffle(sources.map((_,i)=>i));
-      localStorage.setItem(LS.bag,JSON.stringify(bag));
-      localStorage.setItem(LS.bagDate,todayKey());
+
+  function getBag() {
+    let bag = [];
+    try { bag = JSON.parse(localStorage.getItem(LS.bag) || "[]"); } catch(e) { bag = []; }
+    if (localStorage.getItem(LS.bagDate) !== todayKey() || !Array.isArray(bag) || bag.length === 0) {
+      bag = shuffle(sources.map((_, i) => i));
+      localStorage.setItem(LS.bag, JSON.stringify(bag));
+      localStorage.setItem(LS.bagDate, todayKey());
     }
     return bag;
   }
-  function popFromBag(){
-    const bag=getBag();
-    const idx=bag.pop();
-    localStorage.setItem(LS.bag,JSON.stringify(bag));
+
+  function popFromBag() {
+    const bag = getBag();
+    const idx = bag.pop();
+    localStorage.setItem(LS.bag, JSON.stringify(bag));
     return sources[idx];
   }
-  function getPreviewEnabled(){
-    const v=localStorage.getItem(LS.previewOn);
-    return v===null?true:v==="1";
+
+  function getPreviewEnabled() {
+    const v = localStorage.getItem(LS.previewOn);
+    return v === null ? true : v === "1";
   }
-  function setPreviewEnabled(on){
-    localStorage.setItem(LS.previewOn,on?"1":"0");
-    els.previewToggle.checked=on;
-    els.previewTag.textContent=on?"PREVIEW ON":"PREVIEW OFF";
-    els.previewFrameWrap.style.display=on?"block":"none";
+
+  function setPreviewEnabled(on) {
+    localStorage.setItem(LS.previewOn, on ? "1" : "0");
+    els.previewToggle.checked = on;
+    els.previewTag.textContent = on ? "PREVIEW ON" : "PREVIEW OFF";
+    els.previewSection.style.display = on ? "block" : "none";
   }
-  function escapeHtml(s){
-    return String(s).replace(/[&<>"']/g,m=>({"&":"&","<":"<",">":">",'"':""","'":"'"}[m]));
+
+  function escapeHtml(s) {
+    return String(s)
+      .replace(/&/g, "&")
+      .replace(/</g, "<")
+      .replace(/>/g, ">")
+      .replace(/"/g, """)
+      .replace(/'/g, "'");
   }
-  function setCurrent(source){
-    current=source;
-    els.sourceName.textContent=source.name;
-    els.sourceDesc.textContent=source.desc;
-    els.pickedLabel.textContent=source.name;
-    els.status.textContent="◈ Ready — hit OPEN when you're set";
+
+  function showFallback(name) {
+    els.previewFallback.classList.add("show");
+    els.fallbackName.textContent = name;
+  }
+
+  function hideFallback() {
+    els.previewFallback.classList.remove("show");
+  }
+
+  function loadPreview(url, name) {
+    hideFallback();
+    if (fallbackTimer) clearTimeout(fallbackTimer);
+    els.previewFrame.src = "about:blank";
+
+    setTimeout(function() {
+      els.previewFrame.src = url;
+      // After a short delay, check if iframe loaded anything
+      fallbackTimer = setTimeout(function() {
+        try {
+          // If the iframe is blank or errored, show fallback
+          const loc = els.previewFrame.contentWindow.location.href;
+          if (!loc || loc === "about:blank") {
+            showFallback(name);
+          }
+        } catch(e) {
+          // Cross-origin error = site loaded but blocked embedding
+          // iframe has content, so don't show fallback
+        }
+      }, 3000);
+    }, 50);
+  }
+
+  els.previewFrame.addEventListener("load", function() {
+    if (fallbackTimer) clearTimeout(fallbackTimer);
+    try {
+      const loc = els.previewFrame.contentWindow.location.href;
+      if (!loc || loc === "about:blank") {
+        if (current) showFallback(current.name);
+      } else {
+        hideFallback();
+      }
+    } catch(e) {
+      // Cross-origin = site loaded fine, hide fallback
+      hideFallback();
+    }
+  });
+
+  els.previewFrame.addEventListener("error", function() {
+    if (current) showFallback(current.name);
+  });
+
+  function setCurrent(source) {
+    current = source;
+    els.sourceName.textContent = source.name;
+    els.sourceDesc.textContent = source.desc;
+    els.pickedLabel.textContent = source.name;
+    els.status.textContent = "◈ Ready — hit OPEN when you're set";
     renderList();
-    if(getPreviewEnabled())els.previewFrame.src=source.url;
-    else els.previewFrame.src="about:blank";
+
+    if (getPreviewEnabled()) {
+      loadPreview(source.url, source.name);
+    }
+
     els.sourceName.classList.remove("slide-in");
     void els.sourceName.offsetWidth;
     els.sourceName.classList.add("slide-in");
   }
-  function openCurrent(){if(!current)return;incTodayCount();window.location.href=current.url;}
-  function nextPick(){els.status.textContent="◈ Picking something interesting…";setCurrent(popFromBag());}
-  function renderList(){
-    els.list.innerHTML="";
-    sources.forEach(s=>{
-      const div=document.createElement("div");
-      div.className="item";div.tabIndex=0;
-      const sel=s===current;
-      div.innerHTML='<div class="itemTop"><div class="itemName">'+escapeHtml(s.name)+'</div><span class="itemTag'+(sel?" selected":"")+'">'+( sel?"◆ NOW":"PICK")+'</span></div><p class="itemDesc">'+escapeHtml(s.desc)+'</p>';
-      div.addEventListener("click",()=>setCurrent(s));
-      div.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();setCurrent(s);}});
+
+  function openCurrent() {
+    if (!current) return;
+    incTodayCount();
+    window.location.href = current.url;
+  }
+
+  function nextPick() {
+    els.status.textContent = "◈ Picking something interesting…";
+    setCurrent(popFromBag());
+  }
+
+  function renderList() {
+    els.list.innerHTML = "";
+    sources.forEach(function(s) {
+      const div = document.createElement("div");
+      div.className = "item";
+      div.tabIndex = 0;
+      const sel = s === current;
+      div.innerHTML =
+        '<div class="itemTop">' +
+          '<div class="itemName">' + escapeHtml(s.name) + '</div>' +
+          '<span class="itemTag' + (sel ? " selected" : "") + '">' + (sel ? "◆ NOW" : "PICK") + '</span>' +
+        '</div>' +
+        '<p class="itemDesc">' + escapeHtml(s.desc) + '</p>';
+      div.addEventListener("click", function() { setCurrent(s); });
+      div.addEventListener("keydown", function(e) {
+        if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setCurrent(s); }
+      });
       els.list.appendChild(div);
     });
   }
-  function animateBtn(btn,cls){
-    btn.classList.remove(cls);void btn.offsetWidth;btn.classList.add(cls);
-    btn.addEventListener("animationend",()=>btn.classList.remove(cls),{once:true});
+
+  function animateBtn(btn, cls) {
+    btn.classList.remove(cls);
+    void btn.offsetWidth;
+    btn.classList.add(cls);
+    btn.addEventListener("animationend", function() { btn.classList.remove(cls); }, { once: true });
   }
-  els.openBtn.addEventListener("click",()=>{animateBtn(els.openBtn,"pop");openCurrent();});
-  els.openBtn2.addEventListener("click",()=>{animateBtn(els.openBtn2,"pop");openCurrent();});
-  els.nextBtn.addEventListener("click",()=>{animateBtn(els.nextBtn,"wiggle");nextPick();});
-  els.previewToggle.addEventListener("change",e=>{
+
+  els.openBtn.addEventListener("click",  function() { animateBtn(els.openBtn,  "pop"); openCurrent(); });
+  els.openBtn2.addEventListener("click", function() { animateBtn(els.openBtn2, "pop"); openCurrent(); });
+  els.openBtn3.addEventListener("click", function() { animateBtn(els.openBtn3, "pop"); openCurrent(); });
+  els.nextBtn.addEventListener("click",  function() { animateBtn(els.nextBtn,  "wiggle"); nextPick(); });
+
+  els.previewToggle.addEventListener("change", function(e) {
     setPreviewEnabled(e.target.checked);
-    els.previewFrame.src=(!e.target.checked)?"about:blank":(current?current.url:"about:blank");
+    if (e.target.checked && current) loadPreview(current.url, current.name);
+    else { els.previewFrame.src = "about:blank"; hideFallback(); }
   });
-  els.togglePreviewBtn.addEventListener("click",()=>{
-    const on=!getPreviewEnabled();setPreviewEnabled(on);
-    els.previewFrame.src=(on&¤t)?current.url:"about:blank";
+
+  document.addEventListener("keydown", function(e) {
+    const tag = (e.target && e.target.tagName || "").toLowerCase();
+    if (tag === "input" || tag === "textarea") return;
+    if (e.key.toLowerCase() === "n") nextPick();
+    if (e.key.toLowerCase() === "o") openCurrent();
+    if (e.key.toLowerCase() === "p") {
+      const on = !getPreviewEnabled();
+      setPreviewEnabled(on);
+      if (on && current) loadPreview(current.url, current.name);
+      else { els.previewFrame.src = "about:blank"; hideFallback(); }
+    }
   });
-  document.addEventListener("keydown",e=>{
-    const tag=(e.target?.tagName||"").toLowerCase();
-    if(tag==="input"||tag==="textarea")return;
-    if(e.key.toLowerCase()==="n")nextPick();
-    if(e.key.toLowerCase()==="o")openCurrent();
-    if(e.key.toLowerCase()==="p"){const on=!getPreviewEnabled();setPreviewEnabled(on);els.previewFrame.src=(on&¤t)?current.url:"about:blank";}
-  });
+
+  // Init
   renderTodayCount();
   setPreviewEnabled(getPreviewEnabled());
-  els.modeLine.textContent="NON-REPEATING SHUFFLE";
   nextPick();
 </script>
 </body>
