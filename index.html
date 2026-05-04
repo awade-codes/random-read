@@ -3,360 +3,424 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Reading Room</title>
-  <meta name="color-scheme" content="dark light" />
+  <title>✨ Reading Room</title>
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
+
     :root{
-      --bg:#0b0d12;
-      --panel:#111522;
-      --panel2:#0f1320;
-      --text:#e8ecf3;
-      --muted:#a8b0c2;
-      --faint:#6c7590;
-      --line:#1e263a;
-      --accent:#8ab4ff;
-      --good:#7ee787;
-      --warn:#ffcc66;
-      --shadow: 0 10px 30px rgba(0,0,0,.35);
-      --radius:16px;
+      --bg: #fff8f0;
+      --panel: #ffffff;
+      --panel2: #fef3e2;
+      --text: #2d2a3e;
+      --muted: #7a6f8a;
+      --faint: #b0a8c0;
+      --line: #ede8f5;
+      --accent: #a78bfa;
+      --accent2: #f472b6;
+      --good: #34d399;
+      --warn: #fbbf24;
+      --shadow: 0 8px 32px rgba(167,139,250,.15);
+      --radius: 20px;
     }
-    *{box-sizing:border-box}
+    *{box-sizing:border-box;margin:0;padding:0}
     body{
-      margin:0;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
-      background:
-        radial-gradient(1000px 700px at 15% -10%, rgba(138,180,255,.18), transparent 60%),
-        radial-gradient(900px 600px at 95% 10%, rgba(126,231,135,.12), transparent 55%),
-        radial-gradient(800px 600px at 50% 120%, rgba(255,204,102,.09), transparent 55%),
-        var(--bg);
-      color:var(--text);
-      min-height:100vh;
+      font-family: 'Nunito', ui-sans-serif, system-ui, sans-serif;
+      background: linear-gradient(135deg, #fdf4ff 0%, #fff8f0 40%, #f0fdf4 100%);
+      color: var(--text);
+      min-height: 100vh;
     }
     a{color:inherit}
-    .wrap{max-width:1200px;margin:0 auto;padding:22px}
+
+    /* ===== CONFETTI BG ===== */
+    .confetti-bg{
+      position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:0;
+    }
+    .dot{
+      position:absolute;border-radius:50%;opacity:0.35;
+      animation: drift 8s ease-in-out infinite;
+    }
+    @keyframes drift{
+      0%,100%{transform:translateY(0) rotate(0deg) scale(1)}
+      33%{transform:translateY(-18px) rotate(8deg) scale(1.05)}
+      66%{transform:translateY(10px) rotate(-5deg) scale(.97)}
+    }
+
+    /* ===== LAYOUT ===== */
+    .wrap{max-width:1200px;margin:0 auto;padding:28px 22px;position:relative;z-index:1}
+
     header{
-      display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:18px
+      display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:24px;
+      flex-wrap:wrap;
     }
-    .brand{
-      display:flex;flex-direction:column;gap:6px
-    }
+    .brand{display:flex;flex-direction:column;gap:6px}
     .title{
-      font-size:28px;letter-spacing:.2px;font-weight:750;line-height:1.1
+      font-size:36px;font-weight:900;letter-spacing:-.5px;line-height:1;
+      background: linear-gradient(135deg, #a78bfa, #f472b6, #fb923c);
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
     }
-    .subtitle{
-      color:var(--muted);font-size:13px
-    }
+    .subtitle{color:var(--muted);font-size:14px;font-weight:600}
     .kbd{
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-      font-size:12px;color:var(--muted);
-      padding:6px 10px;border:1px solid var(--line);border-radius:999px;background:rgba(17,21,34,.7)
+      font-size:12px;color:var(--muted);font-weight:700;
+      padding:8px 14px;border:2px solid var(--line);border-radius:999px;
+      background:white;box-shadow:0 2px 8px rgba(167,139,250,.1);
     }
 
     .grid{
       display:grid;
       grid-template-columns: 1.25fr .95fr;
-      gap:16px;
+      gap:18px;
     }
-    @media (max-width: 980px){
-      .grid{grid-template-columns:1fr}
-    }
+    @media(max-width:980px){.grid{grid-template-columns:1fr}}
 
     .card{
-      background:linear-gradient(180deg, rgba(17,21,34,.92), rgba(15,19,32,.92));
-      border:1px solid var(--line);
+      background:white;
+      border:2px solid var(--line);
       border-radius:var(--radius);
       box-shadow:var(--shadow);
       overflow:hidden;
     }
     .cardHead{
-      padding:16px 16px 12px 16px;
-      border-bottom:1px solid var(--line);
-      display:flex;align-items:center;justify-content:space-between;gap:12px
+      padding:18px 18px 14px;
+      border-bottom:2px solid var(--line);
+      display:flex;align-items:center;justify-content:space-between;gap:12px;
+      background: linear-gradient(135deg, #fdf4ff, #fff8f0);
     }
-    .cardTitle{
-      display:flex;flex-direction:column;gap:4px
-    }
-    .cardTitle h2{
-      margin:0;font-size:16px;font-weight:700;letter-spacing:.2px
-    }
-    .cardTitle .hint{color:var(--muted);font-size:12px}
+    .cardTitle h2{font-size:16px;font-weight:800;letter-spacing:.1px}
+    .cardTitle .hint{color:var(--muted);font-size:12px;font-weight:600;margin-top:3px}
     .pill{
-      font-size:12px;color:var(--muted);
-      border:1px solid var(--line);
-      background:rgba(255,255,255,.03);
-      padding:6px 10px;border-radius:999px;white-space:nowrap
+      font-size:12px;font-weight:800;color:var(--accent);
+      border:2px solid #ede8f5;
+      background:white;
+      padding:6px 12px;border-radius:999px;white-space:nowrap;
     }
 
-    .feature{
-      padding:18px 16px;
-      display:flex;flex-direction:column;gap:14px
-    }
-    .sourceName{
-      font-size:22px;font-weight:800;letter-spacing:.2px;margin:0
-    }
-    .sourceDesc{margin:0;color:var(--muted);font-size:14px;line-height:1.45}
+    .feature{padding:20px 18px;display:flex;flex-direction:column;gap:16px}
+    .sourceName{font-size:26px;font-weight:900;letter-spacing:-.3px}
+    .sourceDesc{color:var(--muted);font-size:14px;line-height:1.55;font-weight:600}
     .row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
-    .btn{
-      appearance:none;border:1px solid var(--line);
-      background:rgba(255,255,255,.04);
-      color:var(--text);
-      padding:10px 12px;border-radius:12px;
-      cursor:pointer;font-weight:650;
-      display:inline-flex;align-items:center;gap:8px;
-      transition:transform .08s ease, background .12s ease, border-color .12s ease;
-      user-select:none;
-    }
-    .btn:hover{background:rgba(255,255,255,.06);border-color:#2a3552}
-    .btn:active{transform:translateY(1px)}
-    .btnPrimary{
-      background:linear-gradient(180deg, rgba(138,180,255,.22), rgba(138,180,255,.10));
-      border-color:rgba(138,180,255,.35);
-    }
-    .btnPrimary:hover{border-color:rgba(138,180,255,.55)}
-    .btnDanger{
-      background:linear-gradient(180deg, rgba(255,80,80,.18), rgba(255,80,80,.08));
-      border-color:rgba(255,80,80,.35);
-    }
 
-    .meta{
-      display:flex;gap:10px;flex-wrap:wrap;
-      color:var(--muted);font-size:12px
+    .btn{
+      appearance:none;border:2px solid var(--line);
+      background:white;
+      color:var(--text);
+      padding:11px 16px;border-radius:14px;
+      cursor:pointer;font-weight:800;font-size:14px;
+      font-family:inherit;
+      display:inline-flex;align-items:center;gap:8px;
+      transition:transform .1s ease, box-shadow .1s ease, background .1s ease;
+      user-select:none;
+      box-shadow:0 3px 0 #ede8f5;
     }
-    .dot{opacity:.55}
+    .btn:hover{transform:translateY(-2px);box-shadow:0 6px 0 #ede8f5}
+    .btn:active{transform:translateY(1px);box-shadow:0 1px 0 #ede8f5}
+    .btnPrimary{
+      background:linear-gradient(135deg, #a78bfa, #c084fc);
+      border-color:#a78bfa;color:white;
+      box-shadow:0 4px 0 #7c3aed;
+    }
+    .btnPrimary:hover{box-shadow:0 6px 0 #7c3aed;transform:translateY(-2px)}
+    .btnPrimary:active{box-shadow:0 1px 0 #7c3aed;transform:translateY(2px)}
+    .btnPink{
+      background:linear-gradient(135deg, #f472b6, #fb7185);
+      border-color:#f472b6;color:white;
+      box-shadow:0 4px 0 #be185d;
+    }
+    .btnPink:hover{box-shadow:0 6px 0 #be185d;transform:translateY(-2px)}
+    .btnPink:active{box-shadow:0 1px 0 #be185d;transform:translateY(2px)}
+
+    .meta{display:flex;gap:10px;flex-wrap:wrap;color:var(--faint);font-size:12px;font-weight:700}
 
     .settings{
-      padding:14px 16px;
-      border-top:1px solid var(--line);
-      display:flex;flex-direction:column;gap:10px
+      padding:14px 18px;
+      border-top:2px solid var(--line);
+      display:flex;flex-direction:column;gap:10px;
+      background:#fdf9ff;
     }
-    .settingRow{
-      display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap
-    }
-    .settingRow label{display:flex;gap:10px;align-items:center;color:var(--muted);font-size:13px}
+    .settingRow{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+    .settingRow label{display:flex;gap:10px;align-items:center;color:var(--muted);font-size:13px;font-weight:700;cursor:pointer}
     .settingRow input[type="checkbox"]{width:18px;height:18px;accent-color:var(--accent)}
-    .settingRow input[type="range"]{width:220px}
-    .settingRow .value{color:var(--text);font-weight:700}
-    .small{color:var(--faint);font-size:12px;line-height:1.35}
+    .tag{
+      font-size:11px;font-weight:800;color:var(--accent);
+      border:2px solid #ede8f5;padding:4px 10px;border-radius:999px;
+      background:white;
+    }
+    .small{color:var(--faint);font-size:12px;line-height:1.4;font-weight:600}
 
-    .previewWrap{
-      padding:0;
-    }
-    .previewFrameWrap{
-      height:520px;
-      background:#070911;
-      position:relative;
-    }
-    @media (max-width: 980px){
-      .previewFrameWrap{height:420px}
-    }
-    iframe{
-      width:100%;height:100%;
-      border:0;
-      background:#070911;
-    }
+    .previewFrameWrap{height:520px;background:#f8f4ff;position:relative;}
+    @media(max-width:980px){.previewFrameWrap{height:380px}}
+    iframe{width:100%;height:100%;border:0}
     .previewOverlay{
       position:absolute;inset:0;
       display:flex;flex-direction:column;justify-content:flex-end;
-      pointer-events:none;
-      padding:14px;
-      background:linear-gradient(180deg, transparent 45%, rgba(0,0,0,.55));
+      pointer-events:none;padding:14px;
+      background:linear-gradient(180deg,transparent 50%,rgba(255,248,240,.7));
     }
     .previewNote{
       pointer-events:auto;
       display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;
-      border:1px solid rgba(255,255,255,.12);
-      background:rgba(10,12,18,.72);
-      backdrop-filter: blur(8px);
-      padding:10px 12px;border-radius:14px;
-      color:var(--muted);font-size:12px;
+      border:2px solid rgba(167,139,250,.3);
+      background:rgba(255,255,255,.88);
+      backdrop-filter:blur(10px);
+      padding:10px 14px;border-radius:16px;
+      color:var(--muted);font-size:12px;font-weight:700;
     }
-    .previewNote strong{color:var(--text)}
-    .rightCol .list{
-      padding:10px;
-      display:flex;flex-direction:column;gap:10px
-    }
+
+    .list{padding:12px;display:flex;flex-direction:column;gap:10px}
     .item{
-      border:1px solid var(--line);
-      background:rgba(255,255,255,.03);
-      border-radius:14px;
-      padding:12px;
-      cursor:pointer;
-      transition: background .12s ease, border-color .12s ease;
+      border:2px solid var(--line);
+      background:white;
+      border-radius:16px;padding:13px;cursor:pointer;
+      transition:transform .1s ease, box-shadow .1s ease, border-color .1s ease;
+      box-shadow:0 2px 0 #ede8f5;
     }
-    .item:hover{background:rgba(255,255,255,.05);border-color:#2a3552}
-    .itemTop{
-      display:flex;align-items:center;justify-content:space-between;gap:10px
+    .item:hover{transform:translateY(-2px);box-shadow:0 6px 0 #ede8f5;border-color:#c4b5fd}
+    .item:active{transform:translateY(1px)}
+    .itemTop{display:flex;align-items:center;justify-content:space-between;gap:10px}
+    .itemName{font-weight:800;font-size:14px}
+    .itemDesc{margin:5px 0 0;color:var(--muted);font-size:12px;line-height:1.4;font-weight:600}
+    .itemTag{font-size:11px;font-weight:800;color:var(--accent);border:2px solid #ede8f5;padding:3px 9px;border-radius:999px;background:white;white-space:nowrap}
+    .itemTag.selected{background:linear-gradient(135deg,#a78bfa,#c084fc);color:white;border-color:#a78bfa}
+
+    footer{margin-top:18px;color:var(--faint);font-size:13px;font-weight:700;text-align:center}
+
+    /* ===== FLOATING DOODLES ===== */
+    .doodle-layer{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:0}
+    .doodle{
+      position:absolute;
+      animation:floaty 7s ease-in-out infinite;
+      user-select:none;
     }
-    .itemName{font-weight:750}
-    .itemDesc{margin:6px 0 0 0;color:var(--muted);font-size:12.5px;line-height:1.35}
-    .tag{
-      font-size:11px;color:var(--muted);
-      border:1px solid var(--line);
-      padding:4px 8px;border-radius:999px;white-space:nowrap
+    .doodle:nth-child(2){animation-delay:-2s;animation-duration:8s}
+    .doodle:nth-child(3){animation-delay:-4s;animation-duration:6s}
+    .doodle:nth-child(4){animation-delay:-1s;animation-duration:9s}
+    .doodle:nth-child(5){animation-delay:-3s;animation-duration:7.5s}
+    .doodle:nth-child(6){animation-delay:-5s;animation-duration:6.5s}
+    .doodle:nth-child(7){animation-delay:-1.5s;animation-duration:8.5s}
+    .doodle:nth-child(8){animation-delay:-3.5s;animation-duration:7s}
+    @keyframes floaty{
+      0%,100%{transform:translateY(0) rotate(0deg)}
+      33%{transform:translateY(-14px) rotate(5deg)}
+      66%{transform:translateY(8px) rotate(-3deg)}
     }
-    footer{
-      margin-top:14px;color:var(--faint);font-size:12px;line-height:1.4
+
+    /* ===== CHIBI ===== */
+    .chibi-corner{
+      position:fixed;bottom:16px;right:16px;width:100px;
+      pointer-events:none;z-index:2;
+      animation:floaty 5s ease-in-out infinite;
+    }
+
+    /* ===== ANIMATIONS ===== */
+    @keyframes wiggle{
+      0%,100%{transform:rotate(0)}
+      20%{transform:rotate(-8deg)}
+      40%{transform:rotate(8deg)}
+      60%{transform:rotate(-5deg)}
+      80%{transform:rotate(5deg)}
+    }
+    @keyframes pop{
+      0%{transform:scale(1)}
+      40%{transform:scale(1.12)}
+      70%{transform:scale(.96)}
+      100%{transform:scale(1)}
+    }
+    @keyframes bounce-in{
+      0%{transform:scale(.7);opacity:0}
+      60%{transform:scale(1.08)}
+      100%{transform:scale(1);opacity:1}
+    }
+    .wiggle{animation:wiggle .4s ease}
+    .pop{animation:pop .3s ease}
+    .bounce-in{animation:bounce-in .4s ease}
+
+    /* Status badge */
+    #status{
+      display:inline-flex;align-items:center;gap:5px;
+      background:linear-gradient(135deg,#fdf4ff,#fff8f0);
+      border:2px solid #ede8f5;
+      border-radius:999px;padding:4px 12px;
+      font-size:12px;font-weight:700;color:var(--muted);
     }
   </style>
 </head>
-
 <body>
-  <div class="wrap">
-    <header>
-      <div class="brand">
-        <div class="title">Reading Room</div>
-        <div class="subtitle">A calmer new tab: choose something good, then go.</div>
+
+<!-- Pastel confetti dots -->
+<div class="confetti-bg" aria-hidden="true">
+  <div class="dot" style="width:80px;height:80px;background:#fde68a;left:3%;top:8%;animation-delay:0s;animation-duration:9s"></div>
+  <div class="dot" style="width:50px;height:50px;background:#c4b5fd;left:90%;top:5%;animation-delay:-2s;animation-duration:7s"></div>
+  <div class="dot" style="width:60px;height:60px;background:#fbcfe8;left:80%;top:60%;animation-delay:-4s;animation-duration:8s"></div>
+  <div class="dot" style="width:40px;height:40px;background:#a7f3d0;left:5%;top:75%;animation-delay:-1s;animation-duration:6s"></div>
+  <div class="dot" style="width:70px;height:70px;background:#bfdbfe;left:50%;top:3%;animation-delay:-3s;animation-duration:10s"></div>
+  <div class="dot" style="width:35px;height:35px;background:#fca5a5;left:65%;top:85%;animation-delay:-5s;animation-duration:7.5s"></div>
+</div>
+
+<!-- Floating anime doodles -->
+<div class="doodle-layer" aria-hidden="true">
+  <!-- Star -->
+  <svg class="doodle" style="left:7%;top:10%;width:44px;opacity:.5" viewBox="0 0 50 50" fill="none">
+    <polygon points="25,3 30,18 46,18 33,28 38,44 25,34 12,44 17,28 4,18 20,18" fill="#fbbf24" stroke="#f59e0b" stroke-width="1.5"/>
+  </svg>
+  <!-- Sparkle -->
+  <svg class="doodle" style="left:85%;top:12%;width:32px;opacity:.5" viewBox="0 0 40 40" fill="none">
+    <path d="M20 2L22 18L38 20L22 22L20 38L18 22L2 20L18 18Z" fill="#c084fc" stroke="#a78bfa" stroke-width="1"/>
+  </svg>
+  <!-- Heart -->
+  <svg class="doodle" style="left:92%;top:45%;width:34px;opacity:.45" viewBox="0 0 40 38" fill="none">
+    <path d="M20 34C20 34 3 22 3 12C3 7 7 4 11 4C14 4 17 6 20 10C23 6 26 4 29 4C33 4 37 7 37 12C37 22 20 34 20 34Z" fill="#f472b6" stroke="#ec4899" stroke-width="1.5"/>
+  </svg>
+  <!-- Book -->
+  <svg class="doodle" style="left:4%;top:65%;width:46px;opacity:.4" viewBox="0 0 60 60" fill="none">
+    <rect x="8" y="8" width="44" height="44" rx="6" fill="#a78bfa" stroke="#7c3aed" stroke-width="2"/>
+    <line x1="30" y1="8" x2="30" y2="52" stroke="#c4b5fd" stroke-width="2"/>
+    <line x1="13" y1="20" x2="26" y2="20" stroke="white" stroke-width="2" stroke-linecap="round"/>
+    <line x1="13" y1="27" x2="26" y2="27" stroke="white" stroke-width="2" stroke-linecap="round"/>
+    <line x1="34" y1="20" x2="47" y2="20" stroke="white" stroke-width="2" stroke-linecap="round"/>
+  </svg>
+  <!-- Lightning -->
+  <svg class="doodle" style="left:48%;top:6%;width:26px;opacity:.45" viewBox="0 0 30 50" fill="none">
+    <path d="M20 2L7 26L17 26L13 48L26 22L16 22Z" fill="#fbbf24" stroke="#f59e0b" stroke-width="1.5"/>
+  </svg>
+  <!-- Pencil -->
+  <svg class="doodle" style="left:75%;top:78%;width:36px;opacity:.4" viewBox="0 0 20 60" fill="none">
+    <rect x="4" y="8" width="12" height="36" rx="2" fill="#34d399" stroke="#059669" stroke-width="1.5"/>
+    <polygon points="4,44 16,44 10,56" fill="#fbbf24" stroke="#f59e0b" stroke-width="1"/>
+    <rect x="4" y="8" width="12" height="7" rx="2" fill="#f9a8d4" stroke="#ec4899" stroke-width="1"/>
+  </svg>
+  <!-- Small star -->
+  <svg class="doodle" style="left:20%;top:88%;width:22px;opacity:.45" viewBox="0 0 50 50" fill="none">
+    <polygon points="25,3 30,18 46,18 33,28 38,44 25,34 12,44 17,28 4,18 20,18" fill="#60a5fa" stroke="#3b82f6" stroke-width="1.5"/>
+  </svg>
+  <!-- Sparkle 2 -->
+  <svg class="doodle" style="left:58%;top:90%;width:20px;opacity:.4" viewBox="0 0 40 40" fill="none">
+    <path d="M20 2L22 18L38 20L22 22L20 38L18 22L2 20L18 18Z" fill="#fbbf24" stroke="#f59e0b" stroke-width="1"/>
+  </svg>
+</div>
+
+<!-- Chibi corner character -->
+<svg class="chibi-corner" viewBox="0 0 90 115" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <ellipse cx="45" cy="88" rx="22" ry="18" fill="#c4b5fd" stroke="#a78bfa" stroke-width="1.5"/>
+  <circle cx="45" cy="54" r="22" fill="#fde68a" stroke="#fbbf24" stroke-width="1.5"/>
+  <path d="M23 50Q25 28 45 26Q65 28 67 50" fill="#7c3aed" stroke="#6d28d9" stroke-width="1"/>
+  <path d="M23 50Q18 38 22 30Q26 24 30 28" fill="#7c3aed"/>
+  <path d="M67 50Q72 38 68 30Q64 24 60 28" fill="#7c3aed"/>
+  <ellipse cx="37" cy="54" rx="5" ry="6" fill="white"/>
+  <ellipse cx="53" cy="54" rx="5" ry="6" fill="white"/>
+  <circle cx="38" cy="55" r="3.5" fill="#1e1b4b"/>
+  <circle cx="54" cy="55" r="3.5" fill="#1e1b4b"/>
+  <circle cx="39.5" cy="53.5" r="1.2" fill="white"/>
+  <circle cx="55.5" cy="53.5" r="1.2" fill="white"/>
+  <ellipse cx="30" cy="61" rx="5" ry="3" fill="#fca5a5" opacity="0.7"/>
+  <ellipse cx="60" cy="61" rx="5" ry="3" fill="#fca5a5" opacity="0.7"/>
+  <path d="M39 65Q45 70 51 65" stroke="#92400e" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+  <rect x="28" y="90" width="34" height="22" rx="3" fill="#a78bfa" stroke="#7c3aed" stroke-width="1.5"/>
+  <line x1="45" y1="90" x2="45" y2="112" stroke="#7c3aed" stroke-width="1"/>
+  <path d="M23 87Q20 97 28 97" stroke="#fde68a" stroke-width="4" stroke-linecap="round" fill="none"/>
+  <path d="M67 87Q70 97 62 97" stroke="#fde68a" stroke-width="4" stroke-linecap="round" fill="none"/>
+  <rect x="50" y="18" width="38" height="20" rx="9" fill="white" stroke="#c4b5fd" stroke-width="2"/>
+  <path d="M56 38L52 46L62 38" fill="white" stroke="#c4b5fd" stroke-width="1.5"/>
+  <text x="69" y="33" text-anchor="middle" font-size="9" fill="#7c3aed" font-family="sans-serif" font-weight="900">read!</text>
+</svg>
+
+<div class="wrap">
+  <header>
+    <div class="brand">
+      <div class="title">✨ Reading Room ✨</div>
+      <div class="subtitle">📚 Pick something good. Stay off Instagram. You've got this~ 🌸</div>
+    </div>
+    <div class="kbd">⌨️ N next · O open · P preview</div>
+  </header>
+
+  <div class="grid">
+    <!-- Left: Featured -->
+    <section class="card">
+      <div class="cardHead">
+        <div class="cardTitle">
+          <h2>🎯 Featured source</h2>
+          <div class="hint"><span id="status">🔮 Picking something interesting…</span></div>
+        </div>
+        <div class="pill" id="todayCount">🌟 Today: 0 opened</div>
       </div>
-      <div class="kbd">Keys: <strong>N</strong> next · <strong>O</strong> open · <strong>P</strong> toggle preview</div>
-    </header>
 
-    <div class="grid">
-      <!-- Left: Featured + settings -->
-      <section class="card">
-        <div class="cardHead">
-          <div class="cardTitle">
-            <h2>Featured source</h2>
-            <div class="hint" id="status">Picking something interesting…</div>
-          </div>
-          <div class="pill" id="todayCount">Today: 0 opened</div>
+      <div class="feature">
+        <h1 class="sourceName" id="sourceName">—</h1>
+        <p class="sourceDesc" id="sourceDesc">—</p>
+
+        <div class="row">
+          <button class="btn btnPrimary" id="openBtn" title="Open now (O)">📖 Open now</button>
+          <button class="btn btnPink" id="nextBtn" title="Next pick (N)">🎲 Next pick</button>
         </div>
 
-        <div class="feature">
-          <h1 class="sourceName" id="sourceName">—</h1>
-          <p class="sourceDesc" id="sourceDesc">—</p>
-
-          <div class="row">
-            <button class="btn btnPrimary" id="openBtn" title="Open now (O)">Open now</button>
-            <button class="btn" id="nextBtn" title="Next pick (N)">Next</button>
-            <button class="btn btnDanger" id="cancelBtn" style="display:none">Cancel auto-open</button>
-          </div>
-
-          <div class="meta">
-            <span id="autoLine">Auto-open: —</span>
-            <span class="dot">•</span>
-            <span>Mode: <span id="modeLine">Non-repeating</span></span>
-          </div>
+        <div class="meta">
+          <span>🔀 Mode: <span id="modeLine">Non-repeating shuffle</span></span>
         </div>
+      </div>
 
-        <div class="settings">
-          <div class="settingRow">
-            <label>
-              <input type="checkbox" id="autoOpenToggle" />
-              Auto-open after <span class="value"><span id="delayLabel">1.5</span>s</span>
-            </label>
-            <input type="range" id="delayRange" min="0.5" max="6" step="0.5" />
-          </div>
-
-          <div class="settingRow">
-            <label>
-              <input type="checkbox" id="previewToggle" />
-              Show preview pane (iframe)
-            </label>
-            <span class="tag" id="previewTag">Preview ON</span>
-          </div>
-
-          <div class="small">
-            If the preview looks blank for some sites, they block embedding. That’s normal—use <strong>Open now</strong>.
-          </div>
+      <div class="settings">
+        <div class="settingRow">
+          <label>
+            <input type="checkbox" id="previewToggle" />
+            👀 Show preview pane
+          </label>
+          <span class="tag" id="previewTag">Preview ON</span>
         </div>
-      </section>
-
-      <!-- Right: Preview + list -->
-      <aside class="card rightCol">
-        <div class="cardHead">
-          <div class="cardTitle">
-            <h2>Preview</h2>
-            <div class="hint">A quick glance before you commit.</div>
-          </div>
-          <div class="pill" id="pickedLabel">—</div>
+        <div class="small">
+          💡 Some sites block embedding — that's normal! Just hit <strong>Open now</strong> if the preview looks blank.
         </div>
+      </div>
+    </section>
 
-        <div class="previewWrap">
-          <div class="previewFrameWrap" id="previewFrameWrap">
-            <iframe id="previewFrame" title="Preview"></iframe>
-            <div class="previewOverlay">
-              <div class="previewNote">
-                <div>
-                  <strong id="previewStrong">Tip:</strong>
-                  <span id="previewNoteText">Use Next to roll again. Auto-open will run if enabled.</span>
-                </div>
-                <div style="display:flex;gap:8px;flex-wrap:wrap">
-                  <button class="btn" id="togglePreviewBtn" style="pointer-events:auto">Toggle preview</button>
-                  <button class="btn btnPrimary" id="openBtn2" style="pointer-events:auto">Open</button>
-                </div>
+    <!-- Right: Preview + list -->
+    <aside class="card rightCol">
+      <div class="cardHead">
+        <div class="cardTitle">
+          <h2>🖼️ Preview</h2>
+          <div class="hint">A quick peek before you dive in!</div>
+        </div>
+        <div class="pill" id="pickedLabel">—</div>
+      </div>
+
+      <div>
+        <div class="previewFrameWrap" id="previewFrameWrap">
+          <iframe id="previewFrame" title="Preview"></iframe>
+          <div class="previewOverlay">
+            <div class="previewNote">
+              <div>🎯 <strong>Roll</strong> until something sparks joy, then <strong>Open!</strong></div>
+              <div style="display:flex;gap:8px;flex-wrap:wrap">
+                <button class="btn" id="togglePreviewBtn" style="pointer-events:auto">👁️ Toggle</button>
+                <button class="btn btnPrimary" id="openBtn2" style="pointer-events:auto">📖 Open</button>
               </div>
             </div>
           </div>
-
-          <div class="list" id="list"></div>
         </div>
-      </aside>
-    </div>
 
-    <footer>
-      Pro move: put this icon where Instagram used to be (phone home screen) and make the habit effortless.
-    </footer>
+        <div class="list" id="list"></div>
+      </div>
+    </aside>
   </div>
 
+  <footer>
+    💜 Built to make reading more fun than doomscrolling · <span id="footerSpark">✨</span> happy reading!
+  </footer>
+</div>
+
 <script>
-  // --- Sources (includes Good News Network as requested) ---
   const sources = [
-    {
-      name: "Good News Network",
-      url: "https://www.goodnewsnetwork.org/",
-      desc: "A quick hit of optimism: uplifting stories and positive headlines."
-    },
-    {
-      name: "Atlas Obscura",
-      url: "https://www.atlasobscura.com/",
-      desc: "Strange places, curious history, and delightful rabbit holes."
-    },
-    {
-      name: "The Marginalian",
-      url: "https://www.themarginalian.org/",
-      desc: "Timeless essays connecting art, science, philosophy, and life."
-    },
-    {
-      name: "Aeon",
-      url: "https://aeon.co/",
-      desc: "Big ideas in philosophy, psychology, culture, and science."
-    },
-    {
-      name: "Nautilus",
-      url: "https://nautil.us/",
-      desc: "Science meets story; thoughtful long-form and big questions."
-    },
-    {
-      name: "Farnam Street",
-      url: "https://fs.blog/",
-      desc: "Mental models and better thinking, without the fluff."
-    },
-    {
-      name: "The Pudding",
-      url: "https://pudding.cool/",
-      desc: "Data-driven essays that feel like interactive mini-documentaries."
-    },
-    {
-      name: "The Millions",
-      url: "https://themillions.com/",
-      desc: "Books, culture, and smart literary conversations."
-    },
-    {
-      name: "Reddit: Internet Is Beautiful",
-      url: "https://www.reddit.com/r/InternetIsBeautiful/",
-      desc: "A stream of genuinely interesting corners of the web."
-    }
+    { name: "Good News Network 🌻", url: "https://www.goodnewsnetwork.org/", desc: "A quick hit of optimism: uplifting stories and positive headlines." },
+    { name: "Atlas Obscura 🗺️", url: "https://www.atlasobscura.com/", desc: "Strange places, curious history, and delightful rabbit holes." },
+    { name: "The Marginalian 🌿", url: "https://www.themarginalian.org/", desc: "Timeless essays connecting art, science, philosophy, and life." },
+    { name: "Aeon 🧠", url: "https://aeon.co/", desc: "Big ideas in philosophy, psychology, culture, and science." },
+    { name: "Nautilus 🐚", url: "https://nautil.us/", desc: "Science meets story; thoughtful long-form and big questions." },
+    { name: "Farnam Street 🦊", url: "https://fs.blog/", desc: "Mental models and better thinking, without the fluff." },
+    { name: "The Pudding 📊", url: "https://pudding.cool/", desc: "Data-driven essays that feel like interactive mini-documentaries." },
+    { name: "The Millions 📚", url: "https://themillions.com/", desc: "Books, culture, and smart literary conversations." },
+    { name: "Reddit: InternetIsBeautiful 🌐", url: "https://www.reddit.com/r/InternetIsBeautiful/", desc: "A stream of genuinely interesting corners of the web." }
   ];
 
-  // --- State / settings ---
   const LS = {
-    bag: "rr_bag_v1",
-    bagDate: "rr_bag_date_v1",
-    todayDate: "rr_today_date_v1",
-    todayCount: "rr_today_count_v1",
-    autoOn: "rr_auto_on_v1",
-    delay: "rr_delay_v1",
-    previewOn: "rr_preview_on_v1"
+    bag:"rr_bag_v1", bagDate:"rr_bag_date_v1",
+    todayDate:"rr_today_date_v1", todayCount:"rr_today_count_v1",
+    previewOn:"rr_preview_on_v1"
   };
 
   const els = {
@@ -365,15 +429,10 @@
     sourceName: document.getElementById("sourceName"),
     sourceDesc: document.getElementById("sourceDesc"),
     pickedLabel: document.getElementById("pickedLabel"),
-    autoLine: document.getElementById("autoLine"),
     modeLine: document.getElementById("modeLine"),
     openBtn: document.getElementById("openBtn"),
     openBtn2: document.getElementById("openBtn2"),
     nextBtn: document.getElementById("nextBtn"),
-    cancelBtn: document.getElementById("cancelBtn"),
-    autoOpenToggle: document.getElementById("autoOpenToggle"),
-    delayRange: document.getElementById("delayRange"),
-    delayLabel: document.getElementById("delayLabel"),
     previewToggle: document.getElementById("previewToggle"),
     previewTag: document.getElementById("previewTag"),
     previewFrame: document.getElementById("previewFrame"),
@@ -383,252 +442,166 @@
   };
 
   let current = null;
-  let timer = null;
-  let countdownInterval = null;
 
-  function todayKey(){
-    return new Date().toDateString();
-  }
+  function todayKey(){ return new Date().toDateString(); }
 
   function getTodayCount(){
     const d = localStorage.getItem(LS.todayDate);
-    const t = todayKey();
-    if (d !== t){
-      localStorage.setItem(LS.todayDate, t);
+    if(d !== todayKey()){
+      localStorage.setItem(LS.todayDate, todayKey());
       localStorage.setItem(LS.todayCount, "0");
     }
-    return parseInt(localStorage.getItem(LS.todayCount) || "0", 10);
+    return parseInt(localStorage.getItem(LS.todayCount)||"0",10);
   }
 
   function incTodayCount(){
-    const c = getTodayCount() + 1;
+    const c = getTodayCount()+1;
     localStorage.setItem(LS.todayCount, String(c));
     renderTodayCount();
   }
 
   function renderTodayCount(){
-    els.todayCount.textContent = `Today: ${getTodayCount()} opened`;
+    els.todayCount.textContent = "🌟 Today: "+getTodayCount()+" opened";
   }
 
   function shuffle(arr){
-    for (let i = arr.length - 1; i > 0; i--){
-      const j = Math.floor(Math.random() * (i + 1));
-      [arr[i], arr[j]] = [arr[j], arr[i]];
+    for(let i=arr.length-1;i>0;i--){
+      const j=Math.floor(Math.random()*(i+1));
+      [arr[i],arr[j]]=[arr[j],arr[i]];
     }
     return arr;
   }
 
-  // Non-repeating "shuffle bag" so you don't see the same source repeatedly.
   function getBag(){
     const storedDate = localStorage.getItem(LS.bagDate);
-    const t = todayKey();
-    let bag = [];
-    try { bag = JSON.parse(localStorage.getItem(LS.bag) || "[]"); } catch { bag = []; }
-
-    // Refresh bag daily, or if empty/invalid
-    if (storedDate !== t || !Array.isArray(bag) || bag.length === 0){
-      bag = shuffle(sources.map((_, idx) => idx));
-      localStorage.setItem(LS.bag, JSON.stringify(bag));
-      localStorage.setItem(LS.bagDate, t);
+    let bag=[];
+    try{bag=JSON.parse(localStorage.getItem(LS.bag)||"[]");}catch{bag=[];}
+    if(storedDate!==todayKey()||!Array.isArray(bag)||bag.length===0){
+      bag=shuffle(sources.map((_,i)=>i));
+      localStorage.setItem(LS.bag,JSON.stringify(bag));
+      localStorage.setItem(LS.bagDate,todayKey());
     }
     return bag;
   }
 
   function popFromBag(){
-    const bag = getBag();
-    const idx = bag.pop();
-    localStorage.setItem(LS.bag, JSON.stringify(bag));
+    const bag=getBag();
+    const idx=bag.pop();
+    localStorage.setItem(LS.bag,JSON.stringify(bag));
     return sources[idx];
   }
 
-  function setPreviewEnabled(on){
-    localStorage.setItem(LS.previewOn, on ? "1" : "0");
-    els.previewToggle.checked = on;
-    els.previewTag.textContent = on ? "Preview ON" : "Preview OFF";
-    els.previewFrameWrap.style.display = on ? "block" : "none";
-  }
-
-  function setAutoEnabled(on){
-    localStorage.setItem(LS.autoOn, on ? "1" : "0");
-    els.autoOpenToggle.checked = on;
-  }
-
-  function setDelay(seconds){
-    localStorage.setItem(LS.delay, String(seconds));
-    els.delayRange.value = String(seconds);
-    els.delayLabel.textContent = String(seconds);
-  }
-
-  function getDelay(){
-    const v = parseFloat(localStorage.getItem(LS.delay) || "5");
-    return isNaN(v) ? 5 : v;
-  }
-
-  function getAutoEnabled(){
-    return (localStorage.getItem(LS.autoOn) || "0") === "1";
-  }
-
   function getPreviewEnabled(){
-    const v = localStorage.getItem(LS.previewOn);
-    return v === null ? true : v === "1";
+    const v=localStorage.getItem(LS.previewOn);
+    return v===null?true:v==="1";
   }
 
-  function clearTimers(){
-    if (timer) clearTimeout(timer);
-    timer = null;
-    if (countdownInterval) clearInterval(countdownInterval);
-    countdownInterval = null;
-    els.cancelBtn.style.display = "none";
+  function setPreviewEnabled(on){
+    localStorage.setItem(LS.previewOn,on?"1":"0");
+    els.previewToggle.checked=on;
+    els.previewTag.textContent=on?"Preview ON ✅":"Preview OFF";
+    els.previewFrameWrap.style.display=on?"block":"none";
+  }
+
+  function escapeHtml(str){
+    return String(str).replace(/[&<>"']/g,m=>({"&":"&","<":"<",">":">",'"':""","'":"'"}[m]));
   }
 
   function setCurrent(source){
-    clearTimers();
-    current = source;
-
-    els.sourceName.textContent = source.name;
-    els.sourceDesc.textContent = source.desc;
-    els.pickedLabel.textContent = source.name;
-    els.status.textContent = "Ready.";
+    current=source;
+    els.sourceName.textContent=source.name;
+    els.sourceDesc.textContent=source.desc;
+    els.pickedLabel.textContent=source.name;
+    els.status.textContent="✅ Ready — click Open when you're set!";
     renderList();
-
-    const previewOn = getPreviewEnabled();
-    if (previewOn){
-      // Load preview. Some sites block embedding; if blank, user can still Open.
-      els.previewFrame.src = source.url;
-    } else {
-      els.previewFrame.src = "about:blank";
-    }
-
-    //scheduleAutoOpenIfEnabled();
+    if(getPreviewEnabled()) els.previewFrame.src=source.url;
+    else els.previewFrame.src="about:blank";
+    // bounce the source name
+    els.sourceName.classList.remove("bounce-in");
+    void els.sourceName.offsetWidth;
+    els.sourceName.classList.add("bounce-in");
   }
 
   function openCurrent(){
-    if (!current) return;
+    if(!current)return;
     incTodayCount();
-    // Replace the tab (feels instant for New Tab usage)
-    window.location.href = current.url;
-  }
-
-  function scheduleAutoOpenIfEnabled(){
-    const on = getAutoEnabled();
-    const delay = getDelay();
-
-    if (!on){
-      els.autoLine.textContent = "Auto-open: off";
-      return;
-    }
-
-    let remaining = delay;
-    els.autoLine.textContent = `Auto-open: in ${remaining.toFixed(1)}s`;
-    els.cancelBtn.style.display = "inline-flex";
-
-    countdownInterval = setInterval(() => {
-      remaining = Math.max(0, remaining - 0.1);
-      els.autoLine.textContent = `Auto-open: in ${remaining.toFixed(1)}s`;
-      if (remaining <= 0){
-        clearInterval(countdownInterval);
-        countdownInterval = null;
-      }
-    }, 100);
-
-    timer = setTimeout(() => {
-      timer = null;
-      openCurrent();
-    }, delay * 1000);
+    window.location.href=current.url;
   }
 
   function nextPick(){
-    els.status.textContent = "Picking something interesting…";
-    const picked = popFromBag();
-    setCurrent(picked);
+    els.status.textContent="🔮 Picking something interesting…";
+    setCurrent(popFromBag());
   }
 
   function renderList(){
-    els.list.innerHTML = "";
-    sources.forEach((s) => {
-      const div = document.createElement("div");
-      div.className = "item";
-      div.tabIndex = 0;
-      div.innerHTML = `
-        <div class="itemTop">
-          <div class="itemName">${escapeHtml(s.name)}</div>
-          <span class="tag">${s === current ? "Selected" : "Pick"}</span>
-        </div>
-        <p class="itemDesc">${escapeHtml(s.desc)}</p>
-      `;
-      div.addEventListener("click", () => setCurrent(s));
-      div.addEventListener("keydown", (e) => {
-        if (e.key === "Enter" || e.key === " "){
-          e.preventDefault();
-          setCurrent(s);
-        }
+    els.list.innerHTML="";
+    sources.forEach(s=>{
+      const div=document.createElement("div");
+      div.className="item";
+      div.tabIndex=0;
+      const isSelected=s===current;
+      div.innerHTML=
+        '<div class="itemTop">'+
+          '<div class="itemName">'+escapeHtml(s.name)+'</div>'+
+          '<span class="itemTag'+(isSelected?" selected":"")+'">'+
+            (isSelected?"⭐ Now":"Pick")+
+          '</span>'+
+        '</div>'+
+        '<p class="itemDesc">'+escapeHtml(s.desc)+'</p>';
+      div.addEventListener("click",()=>setCurrent(s));
+      div.addEventListener("keydown",e=>{
+        if(e.key==="Enter"||e.key===" "){e.preventDefault();setCurrent(s);}
       });
       els.list.appendChild(div);
     });
   }
 
-  function escapeHtml(str){
-    return String(str).replace(/[&<>"']/g, (m) => ({
-      "&":"&amp;","<​":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
-    }[m]));
+  function animateBtn(btn,cls){
+    btn.classList.remove(cls);
+    void btn.offsetWidth;
+    btn.classList.add(cls);
+    btn.addEventListener("animationend",()=>btn.classList.remove(cls),{once:true});
   }
 
-  // --- Wire up UI ---
-  els.openBtn.addEventListener("click", openCurrent);
-  els.openBtn2.addEventListener("click", openCurrent);
-  els.nextBtn.addEventListener("click", nextPick);
-  els.cancelBtn.addEventListener("click", () => {
-    clearTimers();
-    els.autoLine.textContent = "Auto-open: cancelled";
-  });
+  els.openBtn.addEventListener("click",()=>{animateBtn(els.openBtn,"pop");openCurrent();});
+  els.openBtn2.addEventListener("click",()=>{animateBtn(els.openBtn2,"pop");openCurrent();});
+  els.nextBtn.addEventListener("click",()=>{animateBtn(els.nextBtn,"wiggle");nextPick();});
 
-  els.autoOpenToggle.addEventListener("change", (e) => {
-    setAutoEnabled(e.target.checked);
-    //scheduleAutoOpenIfEnabled();
-  });
-
-  els.delayRange.addEventListener("input", (e) => {
-    setDelay(parseFloat(e.target.value));
-    scheduleAutoOpenIfEnabled();
-  });
-
-  els.previewToggle.addEventListener("change", (e) => {
+  els.previewToggle.addEventListener("change",e=>{
     setPreviewEnabled(e.target.checked);
-    if (!e.target.checked) els.previewFrame.src = "about:blank";
-    else if (current) els.previewFrame.src = current.url;
+    if(!e.target.checked) els.previewFrame.src="about:blank";
+    else if(current) els.previewFrame.src=current.url;
   });
 
-  els.togglePreviewBtn.addEventListener("click", () => {
-    const on = !getPreviewEnabled();
+  els.togglePreviewBtn.addEventListener("click",()=>{
+    const on=!getPreviewEnabled();
     setPreviewEnabled(on);
-    if (on && current) els.previewFrame.src = current.url;
-    if (!on) els.previewFrame.src = "about:blank";
+    els.previewFrame.src=(on&¤t)?current.url:"about:blank";
   });
 
-  // Keyboard shortcuts
-  document.addEventListener("keydown", (e) => {
-    // Don't steal focus if typing in an input (we only have range/checkboxes, but keep it safe)
-    const tag = (e.target && e.target.tagName) ? e.target.tagName.toLowerCase() : "";
-    if (tag === "input" || tag === "textarea") return;
-
-    if (e.key.toLowerCase() === "n") nextPick();
-    if (e.key.toLowerCase() === "o") openCurrent();
-    if (e.key.toLowerCase() === "p") {
-      const on = !getPreviewEnabled();
+  document.addEventListener("keydown",e=>{
+    const tag=(e.target?.tagName||"").toLowerCase();
+    if(tag==="input"||tag==="textarea")return;
+    if(e.key.toLowerCase()==="n")nextPick();
+    if(e.key.toLowerCase()==="o")openCurrent();
+    if(e.key.toLowerCase()==="p"){
+      const on=!getPreviewEnabled();
       setPreviewEnabled(on);
-      if (on && current) els.previewFrame.src = current.url;
-      if (!on) els.previewFrame.src = "about:blank";
+      els.previewFrame.src=(on&¤t)?current.url:"about:blank";
     }
   });
 
-  // --- Init ---
-  renderTodayCount();
-  setDelay(getDelay());
-  setAutoEnabled(getAutoEnabled());
-  setPreviewEnabled(getPreviewEnabled());
-  els.modeLine.textContent = "Non-repeating";
+  // Sparkle footer easter egg
+  let sparkles=["✨","🌟","💫","⭐","🌈","🎉","🦄","🍀"];
+  let si=0;
+  document.getElementById("footerSpark").addEventListener("click",()=>{
+    document.getElementById("footerSpark").textContent=sparkles[si++%sparkles.length];
+  });
 
-  // Start with a pick
+  // Init
+  renderTodayCount();
+  setPreviewEnabled(getPreviewEnabled());
+  els.modeLine.textContent="Non-repeating shuffle";
   nextPick();
 </script>
 </body>
