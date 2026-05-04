@@ -3,416 +3,381 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <title>✦ Reading Room</title>
+  <title>Reading Room</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@600;700;800;900&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap');
 
-    :root{
-      --teal:    #1a6b7c;
-      --teal2:   #0d4a58;
-      --navy:    #0b2a35;
-      --deep:    #071820;
-      --orange:  #e8832a;
-      --yellow:  #f5c842;
-      --cream:   #f5ead8;
-      --text:    #e8f4f8;
-      --muted:   #8bbfcc;
-      --faint:   #4a7a8a;
-      --line:    rgba(255,255,255,.1);
-      --shadow:  0 8px 32px rgba(0,0,0,.4);
-      --radius:  14px;
-    }
-    *{box-sizing:border-box;margin:0;padding:0}
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
-    body{
-      font-family:'Nunito',ui-sans-serif,sans-serif;
-      background: var(--deep);
-      color: var(--text);
-      min-height:100vh;
-      overflow-x:hidden;
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #0a0a0a;
+      color: #e0e0e0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
     }
 
-    .splash-bg{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
-    .splash-bg svg{width:100%;height:100%}
-
-    .wrap{max-width:1200px;margin:0 auto;padding:28px 22px;position:relative;z-index:1}
-
-    header{
-      display:flex;align-items:flex-end;justify-content:space-between;
-      gap:16px;margin-bottom:26px;flex-wrap:wrap;
-    }
-    .brand{display:flex;flex-direction:column;gap:4px}
-    .title{
-      font-family:'Bebas Neue',sans-serif;
-      font-size:52px;letter-spacing:2px;line-height:1;
-      color: var(--yellow);
-      text-shadow: 3px 3px 0 var(--orange), 6px 6px 0 rgba(0,0,0,.3);
-    }
-    .subtitle{color:var(--muted);font-size:13px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;}
-    .kbd{
-      font-size:12px;font-weight:800;color:var(--muted);
-      padding:8px 14px;border:2px solid var(--faint);border-radius:999px;
-      background:rgba(255,255,255,.05);letter-spacing:.5px;
+    .layout {
+      display: grid;
+      grid-template-columns: 1fr 280px;
+      flex: 1;
+      max-width: 1100px;
+      margin: 0 auto;
+      width: 100%;
+      padding: 48px 24px;
+      gap: 40px;
     }
 
-    .grid{display:grid;grid-template-columns:1.25fr .95fr;gap:16px;}
-    @media(max-width:980px){.grid{grid-template-columns:1fr}}
-
-    .card{
-      background: linear-gradient(160deg, rgba(26,107,124,.35), rgba(11,42,53,.6));
-      border:1.5px solid rgba(255,255,255,.12);
-      border-radius:var(--radius);
-      box-shadow:var(--shadow);
-      overflow:hidden;
-      backdrop-filter:blur(4px);
-    }
-    .card::before{content:'';display:block;height:3px;background:linear-gradient(90deg,var(--orange),var(--yellow),var(--teal));}
-
-    .cardHead{
-      padding:16px 18px 13px;
-      border-bottom:1.5px solid var(--line);
-      display:flex;align-items:center;justify-content:space-between;gap:12px;
-      background:rgba(0,0,0,.2);
-    }
-    .cardTitle h2{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:1.5px;color:var(--yellow);}
-    .cardTitle .hint{color:var(--muted);font-size:12px;font-weight:700;margin-top:3px;letter-spacing:.3px}
-    .pill{
-      font-size:11px;font-weight:800;color:var(--orange);
-      border:1.5px solid rgba(232,131,42,.4);
-      background:rgba(232,131,42,.1);
-      padding:5px 12px;border-radius:999px;white-space:nowrap;letter-spacing:.5px;
+    @media (max-width: 760px) {
+      .layout { grid-template-columns: 1fr; padding: 28px 16px; }
+      .sidebar { border-left: none; border-top: 1px solid #1e1e1e; padding-left: 0; padding-top: 24px; }
     }
 
-    .feature{padding:20px 18px;display:flex;flex-direction:column;gap:16px}
-    .sourceName{
-      font-family:'Bebas Neue',sans-serif;
-      font-size:34px;letter-spacing:1px;line-height:1.1;
-      color:var(--cream);
+    /* ── LEFT MAIN ── */
+    .main { display: flex; flex-direction: column; gap: 32px; }
+
+    .eyebrow {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #555;
     }
-    .sourceDesc{color:var(--muted);font-size:14px;line-height:1.55;font-weight:600}
-    .row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
 
-    .btn{
-      appearance:none;
-      border:1.5px solid rgba(255,255,255,.15);
-      background:rgba(255,255,255,.07);
-      color:var(--text);
-      padding:11px 18px;border-radius:10px;
-      cursor:pointer;font-weight:800;font-size:13px;
-      font-family:'Nunito',sans-serif;letter-spacing:.5px;
-      display:inline-flex;align-items:center;gap:8px;
-      transition:transform .1s ease, box-shadow .1s ease, background .1s ease;
-      user-select:none;text-transform:uppercase;
+    .source-name {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(36px, 6vw, 64px);
+      line-height: 1.1;
+      color: #f0f0f0;
+      transition: opacity .25s ease;
     }
-    .btn:hover{background:rgba(255,255,255,.12);transform:translateY(-2px);box-shadow:0 6px 16px rgba(0,0,0,.3)}
-    .btn:active{transform:translateY(1px)}
 
-    .btnPrimary{
-      background:linear-gradient(135deg,var(--orange),#d4621a);
-      border-color:var(--orange);color:white;
-      box-shadow:0 4px 0 #8a3a0a, 0 6px 16px rgba(232,131,42,.3);
+    .source-desc {
+      font-size: 15px;
+      line-height: 1.7;
+      color: #777;
+      max-width: 480px;
     }
-    .btnPrimary:hover{box-shadow:0 6px 0 #8a3a0a, 0 10px 24px rgba(232,131,42,.4);transform:translateY(-2px)}
-    .btnPrimary:active{box-shadow:0 1px 0 #8a3a0a;transform:translateY(2px)}
 
-    .btnYellow{
-      background:linear-gradient(135deg,var(--yellow),#d4a820);
-      border-color:var(--yellow);color:var(--deep);
-      box-shadow:0 4px 0 #8a6a00, 0 6px 16px rgba(245,200,66,.25);
+    .actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
     }
-    .btnYellow:hover{box-shadow:0 6px 0 #8a6a00, 0 10px 24px rgba(245,200,66,.35);transform:translateY(-2px)}
-    .btnYellow:active{box-shadow:0 1px 0 #8a6a00;transform:translateY(2px)}
 
-    .meta{display:flex;gap:10px;flex-wrap:wrap;color:var(--faint);font-size:12px;font-weight:700;letter-spacing:.3px;text-transform:uppercase}
-
-    .settings{
-      padding:14px 18px;
-      border-top:1.5px solid var(--line);
-      display:flex;flex-direction:column;gap:10px;
-      background:rgba(0,0,0,.15);
+    .btn {
+      appearance: none;
+      border: none;
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: .5px;
+      padding: 12px 22px;
+      border-radius: 6px;
+      transition: all .15s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
     }
-    .settingRow{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
-    .settingRow label{display:flex;gap:10px;align-items:center;color:var(--muted);font-size:13px;font-weight:700;cursor:pointer;letter-spacing:.3px}
-    .settingRow input[type="checkbox"]{width:18px;height:18px;accent-color:var(--orange)}
-    .tag{
-      font-size:11px;font-weight:800;color:var(--orange);
-      border:1.5px solid rgba(232,131,42,.4);
-      padding:4px 10px;border-radius:999px;
-      background:rgba(232,131,42,.1);letter-spacing:.5px;
+
+    .btn-primary {
+      background: #f0f0f0;
+      color: #0a0a0a;
     }
-    .small{color:var(--faint);font-size:12px;line-height:1.4;font-weight:600}
+    .btn-primary:hover { background: #fff; transform: translateY(-1px); }
+    .btn-primary:active { transform: translateY(0); }
 
-    /* Preview pane */
-    .previewWrap{
-      position:relative;
-      height:320px;
-      background:rgba(0,0,0,.3);
-      overflow:hidden;
+    .btn-ghost {
+      background: transparent;
+      color: #888;
+      border: 1px solid #222;
     }
-    iframe{width:100%;height:100%;border:0;display:block;}
+    .btn-ghost:hover { border-color: #444; color: #ccc; transform: translateY(-1px); }
+    .btn-ghost:active { transform: translateY(0); }
 
-    .previewFallback{
-      position:absolute;inset:0;
-      display:none;
-      flex-direction:column;
-      align-items:center;justify-content:center;
-      gap:14px;
-      text-align:center;
-      padding:24px;
-      background:linear-gradient(160deg,rgba(26,107,124,.25),rgba(7,24,32,.7));
+    .btn-saved {
+      background: transparent;
+      color: #f5c842;
+      border: 1px solid #3a3010;
     }
-    .previewFallback.show{display:flex;}
-    .previewFallback .fallbackIcon{font-size:48px;}
-    .previewFallback .fallbackTitle{
-      font-family:'Bebas Neue',sans-serif;
-      font-size:22px;letter-spacing:1.5px;color:var(--yellow);
+    .btn-saved:hover { border-color: #f5c842; }
+
+    .meta {
+      font-size: 12px;
+      color: #333;
+      letter-spacing: .5px;
     }
-    .previewFallback .fallbackSub{color:var(--muted);font-size:13px;font-weight:700;max-width:260px;line-height:1.5;}
 
-    .previewOverlay{
-      position:absolute;bottom:0;left:0;right:0;
-      padding:12px 14px;
-      background:linear-gradient(0deg,rgba(7,24,32,.9) 0%,transparent 100%);
-      display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;
+    /* ── SAVED BANNER ── */
+    .saved-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
     }
-    .previewNote{color:var(--muted);font-size:12px;font-weight:700;letter-spacing:.3px;}
-
-    /* Source list */
-    .list{padding:10px;display:flex;flex-direction:column;gap:8px}
-    .item{
-      border:1.5px solid rgba(255,255,255,.08);
-      background:rgba(255,255,255,.04);
-      border-radius:12px;padding:12px;cursor:pointer;
-      transition:transform .1s ease, background .1s ease, border-color .1s ease;
+    .saved-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #444;
+      margin-bottom: 4px;
     }
-    .item:hover{background:rgba(255,255,255,.08);border-color:rgba(232,131,42,.4);transform:translateX(3px)}
-    .itemTop{display:flex;align-items:center;justify-content:space-between;gap:10px}
-    .itemName{font-weight:800;font-size:13px;letter-spacing:.2px}
-    .itemDesc{margin:5px 0 0;color:var(--faint);font-size:12px;line-height:1.4;font-weight:600}
-    .itemTag{
-      font-size:10px;font-weight:800;color:var(--muted);
-      border:1.5px solid rgba(255,255,255,.1);
-      padding:3px 9px;border-radius:999px;
-      background:rgba(255,255,255,.05);white-space:nowrap;letter-spacing:.5px;text-transform:uppercase;
+    .saved-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 8px 12px;
+      background: #111;
+      border-radius: 6px;
+      font-size: 13px;
+      color: #aaa;
     }
-    .itemTag.selected{background:linear-gradient(135deg,var(--orange),#d4621a);color:white;border-color:var(--orange);}
+    .saved-item a {
+      color: #aaa;
+      text-decoration: none;
+      flex: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .saved-item a:hover { color: #f0f0f0; }
+    .saved-remove {
+      background: none;
+      border: none;
+      color: #444;
+      cursor: pointer;
+      font-size: 16px;
+      line-height: 1;
+      padding: 0 2px;
+      transition: color .15s;
+    }
+    .saved-remove:hover { color: #888; }
 
-    footer{margin-top:18px;color:var(--faint);font-size:12px;font-weight:700;text-align:center;letter-spacing:.5px;text-transform:uppercase;}
+    /* ── SIDEBAR ── */
+    .sidebar {
+      border-left: 1px solid #1a1a1a;
+      padding-left: 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
 
-    /* Deco shapes */
-    .deco-layer{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:0}
-    .deco{position:absolute;animation:floaty 8s ease-in-out infinite;}
-    .deco:nth-child(2){animation-delay:-2s;animation-duration:9s}
-    .deco:nth-child(3){animation-delay:-4.5s;animation-duration:7s}
-    .deco:nth-child(4){animation-delay:-1.5s;animation-duration:10s}
-    .deco:nth-child(5){animation-delay:-3s;animation-duration:8.5s}
+    .sidebar-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #333;
+      margin-bottom: 10px;
+    }
 
-    @keyframes floaty{0%,100%{transform:translateY(0) rotate(0deg)}33%{transform:translateY(-16px) rotate(4deg)}66%{transform:translateY(9px) rotate(-3deg)}}
-    @keyframes wiggle{0%,100%{transform:rotate(0)}20%{transform:rotate(-8deg)}50%{transform:rotate(8deg)}80%{transform:rotate(-4deg)}}
-    @keyframes pop{0%{transform:scale(1)}40%{transform:scale(1.1)}70%{transform:scale(.97)}100%{transform:scale(1)}}
-    @keyframes slide-in{0%{transform:translateX(-12px);opacity:0}100%{transform:translateX(0);opacity:1}}
-    .wiggle{animation:wiggle .4s ease}
-    .pop{animation:pop .3s ease}
-    .slide-in{animation:slide-in .35s ease}
+    .sidebar-item {
+      padding: 10px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background .15s ease;
+      border: 1px solid transparent;
+    }
+    .sidebar-item:hover { background: #111; border-color: #1e1e1e; }
+    .sidebar-item.active { background: #111; border-color: #2a2a2a; }
 
-    #status{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.3px;}
+    .sidebar-item-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: #ccc;
+      margin-bottom: 3px;
+    }
+    .sidebar-item.active .sidebar-item-name { color: #f0f0f0; }
+
+    .sidebar-item-desc {
+      font-size: 11px;
+      color: #444;
+      line-height: 1.4;
+    }
+
+    /* ── PREVIEW PANE ── */
+    .preview-section {
+      margin-top: 8px;
+    }
+    .preview-toggle-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .preview-toggle-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #444;
+      cursor: pointer;
+      user-select: none;
+    }
+    .toggle-switch {
+      position: relative;
+      width: 36px;
+      height: 20px;
+      cursor: pointer;
+    }
+    .toggle-switch input { opacity: 0; width: 0; height: 0; }
+    .toggle-track {
+      position: absolute;
+      inset: 0;
+      background: #1e1e1e;
+      border-radius: 20px;
+      border: 1px solid #2a2a2a;
+      transition: background .2s;
+    }
+    .toggle-switch input:checked + .toggle-track { background: #2a2a2a; border-color: #444; }
+    .toggle-thumb {
+      position: absolute;
+      top: 3px; left: 3px;
+      width: 12px; height: 12px;
+      background: #444;
+      border-radius: 50%;
+      transition: transform .2s, background .2s;
+    }
+    .toggle-switch input:checked + .toggle-track .toggle-thumb {
+      transform: translateX(16px);
+      background: #f0f0f0;
+    }
+
+    .preview-wrap {
+      position: relative;
+      width: 100%;
+      height: 260px;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid #1a1a1a;
+      background: #0d0d0d;
+    }
+    .preview-wrap iframe {
+      width: 100%; height: 100%; border: 0; display: block;
+    }
+    .preview-fallback {
+      position: absolute;
+      inset: 0;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      background: #0d0d0d;
+      color: #333;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: .5px;
+      text-align: center;
+      padding: 24px;
+    }
+    .preview-fallback.show { display: flex; }
+    .preview-fallback-icon { font-size: 32px; opacity: .4; }
+    .preview-fallback-text { color: #444; font-size: 12px; }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center;
+      padding: 20px;
+      font-size: 11px;
+      color: #2a2a2a;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
   </style>
 </head>
 <body>
 
-<!-- Paint splash background -->
-<div class="splash-bg" aria-hidden="true">
-  <svg viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
-    <ellipse cx="120" cy="120" rx="320" ry="260" fill="#1a6b7c" opacity=".18" transform="rotate(-20 120 120)"/>
-    <path d="M1200 0 Q1380 80 1440 200 Q1360 160 1280 220 Q1340 100 1200 0Z" fill="#e8832a" opacity=".22"/>
-    <ellipse cx="1350" cy="180" rx="180" ry="120" fill="#e8832a" opacity=".12" transform="rotate(15 1350 180)"/>
-    <ellipse cx="1380" cy="500" rx="140" ry="200" fill="#f5c842" opacity=".1" transform="rotate(-10 1380 500)"/>
-    <ellipse cx="80" cy="780" rx="260" ry="180" fill="#1a6b7c" opacity=".15" transform="rotate(10 80 780)"/>
-    <path d="M1300 800 Q1440 820 1440 900 L1200 900Z" fill="#e8832a" opacity=".18"/>
-    <rect x="60" y="300" width="60" height="60" fill="#f5c842" opacity=".08" transform="rotate(15 90 330)"/>
-    <rect x="1300" y="350" width="45" height="45" fill="#1a6b7c" opacity=".12" transform="rotate(-20 1322 372)"/>
-    <rect x="700" y="50" width="35" height="35" fill="#e8832a" opacity=".1" transform="rotate(30 717 67)"/>
-    <circle cx="400" cy="820" r="80" fill="#f5c842" opacity=".07"/>
-    <circle cx="1100" cy="100" r="60" fill="#1a6b7c" opacity=".1"/>
-  </svg>
-</div>
-
-<!-- Floating deco shapes -->
-<div class="deco-layer" aria-hidden="true">
-  <svg class="deco" style="left:6%;top:8%;width:42px;opacity:.55" viewBox="0 0 50 50" fill="none">
-    <polygon points="25,3 30,18 46,18 33,28 38,44 25,34 12,44 17,28 4,18 20,18" fill="#f5c842" stroke="#e8832a" stroke-width="1.5"/>
-  </svg>
-  <svg class="deco" style="left:88%;top:15%;width:36px;opacity:.45" viewBox="0 0 40 40" fill="none">
-    <polygon points="20,2 38,20 20,38 2,20" fill="#1a6b7c" stroke="#8bbfcc" stroke-width="1.5"/>
-  </svg>
-  <svg class="deco" style="left:78%;top:60%;width:28px;opacity:.4" viewBox="0 0 40 40" fill="none">
-    <path d="M20 2L22 18L38 20L22 22L20 38L18 22L2 20L18 18Z" fill="#f5c842" stroke="#e8832a" stroke-width="1"/>
-  </svg>
-  <svg class="deco" style="left:4%;top:68%;width:50px;opacity:.3" viewBox="0 0 50 50" fill="none">
-    <circle cx="25" cy="25" r="22" stroke="#e8832a" stroke-width="2.5" fill="none"/>
-  </svg>
-  <svg class="deco" style="left:50%;top:4%;width:24px;opacity:.35" viewBox="0 0 30 30" fill="none">
-    <rect x="3" y="3" width="24" height="24" rx="3" fill="#f5c842" opacity=".6" transform="rotate(20 15 15)"/>
-  </svg>
-</div>
-
-<div class="wrap">
-  <header>
-    <div class="brand">
-      <div class="title">✦ READING ROOM</div>
-      <div class="subtitle">📖 Pick something good · Stay off Instagram · Go~</div>
+<div class="layout">
+  <!-- Main -->
+  <main class="main">
+    <div>
+      <div class="eyebrow" id="eyebrow">Up next</div>
     </div>
-    <div class="kbd">N · next  |  O · open  |  P · preview</div>
-  </header>
 
-  <div class="grid">
-    <!-- Left: Featured -->
-    <section class="card">
-      <div class="cardHead">
-        <div class="cardTitle">
-          <h2>FEATURED SOURCE</h2>
-          <div class="hint"><span id="status">◈ Picking something interesting…</span></div>
-        </div>
-        <div class="pill" id="todayCount">◆ TODAY: 0 OPENED</div>
+    <div>
+      <h1 class="source-name" id="sourceName">—</h1>
+    </div>
+
+    <p class="source-desc" id="sourceDesc">—</p>
+
+    <div class="actions">
+      <button class="btn btn-primary" id="openBtn">Open →</button>
+      <button class="btn btn-ghost"   id="nextBtn">Skip</button>
+      <button class="btn btn-ghost"   id="saveBtn">☆ Save for later</button>
+    </div>
+
+    <div class="meta" id="meta">—</div>
+
+    <!-- Preview pane -->
+    <div class="preview-section">
+      <div class="preview-toggle-row">
+        <label class="toggle-switch">
+          <input type="checkbox" id="previewToggle"/>
+          <div class="toggle-track"><div class="toggle-thumb"></div></div>
+        </label>
+        <span class="preview-toggle-label">Preview</span>
       </div>
-
-      <div class="feature">
-        <h1 class="sourceName" id="sourceName">—</h1>
-        <p class="sourceDesc" id="sourceDesc">—</p>
-        <div class="row">
-          <button class="btn btnPrimary" id="openBtn">▶ OPEN NOW</button>
-          <button class="btn btnYellow" id="nextBtn">⟳ NEXT PICK</button>
-        </div>
-        <div class="meta">
-          <span>⟳ MODE: NON-REPEATING SHUFFLE</span>
-        </div>
-      </div>
-
-      <div class="settings">
-        <div class="settingRow">
-          <label>
-            <input type="checkbox" id="previewToggle" checked/>
-            ◈ SHOW PREVIEW PANE
-          </label>
-          <span class="tag" id="previewTag">PREVIEW ON</span>
-        </div>
-        <div class="small">
-          Some sites block embedding — a "mystery card" will show instead. Hit OPEN NOW to visit.
-        </div>
-      </div>
-    </section>
-
-    <!-- Right: Preview + list -->
-    <aside class="card">
-      <div class="cardHead">
-        <div class="cardTitle">
-          <h2>PREVIEW</h2>
-          <div class="hint">A quick look before you dive in.</div>
-        </div>
-        <div class="pill" id="pickedLabel">—</div>
-      </div>
-
-      <div id="previewSection">
-        <div class="previewWrap" id="previewWrap">
-          <iframe id="previewFrame" title="Preview" sandbox="allow-scripts allow-same-origin allow-forms"></iframe>
-
-          <!-- Fallback shown when site blocks embedding -->
-          <div class="previewFallback" id="previewFallback">
-            <div class="fallbackIcon">📖</div>
-            <div class="fallbackTitle" id="fallbackName">—</div>
-            <div class="fallbackSub">This site doesn't allow previews — but it's worth the click!</div>
-            <button class="btn btnPrimary" id="openBtn3">▶ OPEN NOW</button>
-          </div>
-
-          <div class="previewOverlay">
-            <div class="previewNote">Roll until something sparks, then OPEN ✦</div>
-            <button class="btn btnPrimary" id="openBtn2" style="padding:8px 14px;font-size:12px;">▶ OPEN</button>
+      <div id="previewPane" style="display:none">
+        <div class="preview-wrap">
+          <iframe id="previewFrame" title="Site preview"></iframe>
+          <div class="preview-fallback" id="previewFallback">
+            <div class="preview-fallback-icon">◻</div>
+            <div class="preview-fallback-text">This site doesn't allow previews — hit Open to visit.</div>
           </div>
         </div>
       </div>
+    </div>
 
-      <div class="list" id="list"></div>
-    </aside>
-  </div>
+    <!-- Saved list -->
+    <div id="savedSection" style="display:none">
+      <div class="saved-label">Saved for later</div>
+      <div class="saved-list" id="savedList"></div>
+    </div>
+  </main>
 
-  <footer>✦ Built to make reading better than doomscrolling  ·  ✦ happy reading</footer>
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-label">All sources</div>
+    <div id="sidebarList"></div>
+  </aside>
 </div>
+
+<footer>reading room · stay curious</footer>
 
 <script>
   const sources = [
-    { name: "Good News Network",        url: "https://www.goodnewsnetwork.org/",          desc: "A quick hit of optimism: uplifting stories and positive headlines." },
-    { name: "Atlas Obscura",            url: "https://www.atlasobscura.com/",             desc: "Strange places, curious history, and delightful rabbit holes." },
-    { name: "The Marginalian",          url: "https://www.themarginalian.org/",           desc: "Timeless essays connecting art, science, philosophy, and life." },
-    { name: "Aeon",                     url: "https://aeon.co/",                          desc: "Big ideas in philosophy, psychology, culture, and science." },
-    { name: "Nautilus",                 url: "https://nautil.us/",                        desc: "Science meets story; thoughtful long-form and big questions." },
-    { name: "Farnam Street",            url: "https://fs.blog/",                          desc: "Mental models and better thinking, without the fluff." },
-    { name: "The Pudding",              url: "https://pudding.cool/",                     desc: "Data-driven essays that feel like interactive mini-documentaries." },
-    { name: "The Millions",             url: "https://themillions.com/",                  desc: "Books, culture, and smart literary conversations." },
-    { name: "Reddit: InternetIsBeautiful", url: "https://www.reddit.com/r/InternetIsBeautiful/", desc: "A stream of genuinely interesting corners of the web." }
+    { name: "Good News Network",           url: "https://www.goodnewsnetwork.org/",                   desc: "Uplifting stories and positive headlines." },
+    { name: "Atlas Obscura",               url: "https://www.atlasobscura.com/",                      desc: "Strange places and curious history." },
+    { name: "The Marginalian",             url: "https://www.themarginalian.org/",                    desc: "Art, science, philosophy, and life." },
+    { name: "Aeon",                        url: "https://aeon.co/",                                   desc: "Big ideas in philosophy and culture." },
+    { name: "Nautilus",                    url: "https://nautil.us/",                                 desc: "Science meets story." },
+    { name: "Farnam Street",               url: "https://fs.blog/",                                   desc: "Mental models and better thinking." },
+    { name: "The Pudding",                 url: "https://pudding.cool/",                              desc: "Data-driven visual essays." },
+    { name: "The Millions",                url: "https://themillions.com/",                           desc: "Books and literary culture." },
+    { name: "Reddit: InternetIsBeautiful", url: "https://www.reddit.com/r/InternetIsBeautiful/",      desc: "Interesting corners of the web." }
   ];
 
-  const LS = {
-    bag: "rr_bag_v1", bagDate: "rr_bag_date_v1",
-    todayDate: "rr_today_date_v1", todayCount: "rr_today_count_v1",
-    previewOn: "rr_preview_on_v1"
-  };
-
-  const els = {
-    status:        document.getElementById("status"),
-    todayCount:    document.getElementById("todayCount"),
-    sourceName:    document.getElementById("sourceName"),
-    sourceDesc:    document.getElementById("sourceDesc"),
-    pickedLabel:   document.getElementById("pickedLabel"),
-    openBtn:       document.getElementById("openBtn"),
-    openBtn2:      document.getElementById("openBtn2"),
-    openBtn3:      document.getElementById("openBtn3"),
-    nextBtn:       document.getElementById("nextBtn"),
-    previewToggle: document.getElementById("previewToggle"),
-    previewTag:    document.getElementById("previewTag"),
-    previewFrame:  document.getElementById("previewFrame"),
-    previewWrap:   document.getElementById("previewWrap"),
-    previewSection:document.getElementById("previewSection"),
-    previewFallback:document.getElementById("previewFallback"),
-    fallbackName:  document.getElementById("fallbackName"),
-    list:          document.getElementById("list")
-  };
-
+  const LS = { bag: "rr_bag2", bagDate: "rr_bagDate2", saved: "rr_saved2", todayDate: "rr_td2", todayCount: "rr_tc2", preview: "rr_preview2" };
   let current = null;
   let fallbackTimer = null;
 
+  // ── Bag (non-repeating shuffle) ──
   function todayKey() { return new Date().toDateString(); }
-
-  function getTodayCount() {
-    if (localStorage.getItem(LS.todayDate) !== todayKey()) {
-      localStorage.setItem(LS.todayDate, todayKey());
-      localStorage.setItem(LS.todayCount, "0");
-    }
-    return parseInt(localStorage.getItem(LS.todayCount) || "0", 10);
-  }
-
-  function incTodayCount() {
-    localStorage.setItem(LS.todayCount, String(getTodayCount() + 1));
-    renderTodayCount();
-  }
-
-  function renderTodayCount() {
-    els.todayCount.textContent = "◆ TODAY: " + getTodayCount() + " OPENED";
-  }
-
-  function shuffle(arr) {
-    const a = arr.slice();
-    for (let i = a.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [a[i], a[j]] = [a[j], a[i]];
-    }
-    return a;
-  }
 
   function getBag() {
     let bag = [];
     try { bag = JSON.parse(localStorage.getItem(LS.bag) || "[]"); } catch(e) { bag = []; }
     if (localStorage.getItem(LS.bagDate) !== todayKey() || !Array.isArray(bag) || bag.length === 0) {
-      bag = shuffle(sources.map((_, i) => i));
+      const idx = sources.map((_, i) => i);
+      for (let i = idx.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [idx[i], idx[j]] = [idx[j], idx[i]];
+      }
+      bag = idx;
       localStorage.setItem(LS.bag, JSON.stringify(bag));
       localStorage.setItem(LS.bagDate, todayKey());
     }
@@ -423,165 +388,164 @@
     const bag = getBag();
     const idx = bag.pop();
     localStorage.setItem(LS.bag, JSON.stringify(bag));
-    return sources[idx];
+    return sources[idx !== undefined ? idx : 0];
   }
 
-  function getPreviewEnabled() {
-    const v = localStorage.getItem(LS.previewOn);
-    return v === null ? true : v === "1";
+  // ── Today count ──
+  function getTodayCount() {
+    if (localStorage.getItem(LS.todayDate) !== todayKey()) {
+      localStorage.setItem(LS.todayDate, todayKey());
+      localStorage.setItem(LS.todayCount, "0");
+    }
+    return parseInt(localStorage.getItem(LS.todayCount) || "0", 10);
+  }
+  function incTodayCount() {
+    localStorage.setItem(LS.todayCount, String(getTodayCount() + 1));
   }
 
-  function setPreviewEnabled(on) {
-    localStorage.setItem(LS.previewOn, on ? "1" : "0");
-    els.previewToggle.checked = on;
-    els.previewTag.textContent = on ? "PREVIEW ON" : "PREVIEW OFF";
-    els.previewSection.style.display = on ? "block" : "none";
+  // ── Saved ──
+  function getSaved() {
+    try { return JSON.parse(localStorage.getItem(LS.saved) || "[]"); } catch(e) { return []; }
+  }
+  function setSaved(arr) { localStorage.setItem(LS.saved, JSON.stringify(arr)); }
+
+  function saveForLater(source) {
+    const saved = getSaved();
+    if (!saved.find(s => s.url === source.url)) {
+      saved.push({ name: source.name, url: source.url });
+      setSaved(saved);
+    }
+    renderSaved();
+    const btn = document.getElementById("saveBtn");
+    btn.textContent = "★ Saved!";
+    btn.classList.add("btn-saved");
+    setTimeout(() => {
+      btn.textContent = "☆ Save for later";
+      btn.classList.remove("btn-saved");
+    }, 1500);
   }
 
-  function escapeHtml(s) {
-    return String(s)
-      .replace(/&/g, "&")
-      .replace(/</g, "<")
-      .replace(/>/g, ">")
-      .replace(/"/g, """)
-      .replace(/'/g, "'");
+  function removeSaved(url) {
+    setSaved(getSaved().filter(s => s.url !== url));
+    renderSaved();
   }
 
-  function showFallback(name) {
-    els.previewFallback.classList.add("show");
-    els.fallbackName.textContent = name;
+  function renderSaved() {
+    const saved = getSaved();
+    const section = document.getElementById("savedSection");
+    const list = document.getElementById("savedList");
+    if (saved.length === 0) { section.style.display = "none"; return; }
+    section.style.display = "block";
+    list.innerHTML = "";
+    saved.forEach(s => {
+      const div = document.createElement("div");
+      div.className = "saved-item";
+      div.innerHTML =
+        '<a href="' + s.url + '" target="_blank">' + s.name + '</a>' +
+        '<button class="saved-remove" title="Remove">×</button>';
+      div.querySelector(".saved-remove").addEventListener("click", () => removeSaved(s.url));
+      list.appendChild(div);
+    });
   }
 
-  function hideFallback() {
-    els.previewFallback.classList.remove("show");
+  // ── Preview ──
+  function getPreviewOn() { return localStorage.getItem(LS.preview) === "1"; }
+  function setPreviewOn(on) {
+    localStorage.setItem(LS.preview, on ? "1" : "0");
+    document.getElementById("previewToggle").checked = on;
+    document.getElementById("previewPane").style.display = on ? "block" : "none";
+    if (on && current) loadPreview(current.url, current.name);
+    else {
+      document.getElementById("previewFrame").src = "about:blank";
+      hideFallback();
+    }
   }
+
+  function hideFallback() { document.getElementById("previewFallback").classList.remove("show"); }
+  function showFallback() { document.getElementById("previewFallback").classList.add("show"); }
 
   function loadPreview(url, name) {
     hideFallback();
     if (fallbackTimer) clearTimeout(fallbackTimer);
-    els.previewFrame.src = "about:blank";
-
+    const frame = document.getElementById("previewFrame");
+    frame.src = "about:blank";
     setTimeout(function() {
-      els.previewFrame.src = url;
-      // After a short delay, check if iframe loaded anything
+      frame.src = url;
       fallbackTimer = setTimeout(function() {
         try {
-          // If the iframe is blank or errored, show fallback
-          const loc = els.previewFrame.contentWindow.location.href;
-          if (!loc || loc === "about:blank") {
-            showFallback(name);
-          }
-        } catch(e) {
-          // Cross-origin error = site loaded but blocked embedding
-          // iframe has content, so don't show fallback
-        }
+          const loc = frame.contentWindow.location.href;
+          if (!loc || loc === "about:blank") showFallback();
+        } catch(e) { /* cross-origin = loaded fine */ }
       }, 3000);
     }, 50);
   }
 
-  els.previewFrame.addEventListener("load", function() {
+  document.getElementById("previewFrame").addEventListener("load", function() {
     if (fallbackTimer) clearTimeout(fallbackTimer);
     try {
-      const loc = els.previewFrame.contentWindow.location.href;
-      if (!loc || loc === "about:blank") {
-        if (current) showFallback(current.name);
-      } else {
-        hideFallback();
-      }
-    } catch(e) {
-      // Cross-origin = site loaded fine, hide fallback
-      hideFallback();
-    }
+      const loc = document.getElementById("previewFrame").contentWindow.location.href;
+      if (!loc || loc === "about:blank") showFallback();
+      else hideFallback();
+    } catch(e) { hideFallback(); }
   });
 
-  els.previewFrame.addEventListener("error", function() {
-    if (current) showFallback(current.name);
+  document.getElementById("previewToggle").addEventListener("change", function(e) {
+    setPreviewOn(e.target.checked);
   });
 
+  // ── Set current source ──
   function setCurrent(source) {
     current = source;
-    els.sourceName.textContent = source.name;
-    els.sourceDesc.textContent = source.desc;
-    els.pickedLabel.textContent = source.name;
-    els.status.textContent = "◈ Ready — hit OPEN when you're set";
-    renderList();
-
-    if (getPreviewEnabled()) {
-      loadPreview(source.url, source.name);
-    }
-
-    els.sourceName.classList.remove("slide-in");
-    void els.sourceName.offsetWidth;
-    els.sourceName.classList.add("slide-in");
+    document.getElementById("sourceName").textContent = source.name;
+    document.getElementById("sourceDesc").textContent = source.desc;
+    document.getElementById("meta").textContent =
+      "Today: " + getTodayCount() + " opened  ·  " + todayKey();
+    renderSidebar();
+    if (getPreviewOn()) loadPreview(source.url, source.name);
   }
 
-  function openCurrent() {
-    if (!current) return;
-    incTodayCount();
-    window.location.href = current.url;
-  }
-
-  function nextPick() {
-    els.status.textContent = "◈ Picking something interesting…";
-    setCurrent(popFromBag());
-  }
-
-  function renderList() {
-    els.list.innerHTML = "";
-    sources.forEach(function(s) {
+  // ── Sidebar ──
+  function renderSidebar() {
+    const container = document.getElementById("sidebarList");
+    container.innerHTML = "";
+    sources.forEach(s => {
       const div = document.createElement("div");
-      div.className = "item";
-      div.tabIndex = 0;
-      const sel = s === current;
+      div.className = "sidebar-item" + (s === current ? " active" : "");
       div.innerHTML =
-        '<div class="itemTop">' +
-          '<div class="itemName">' + escapeHtml(s.name) + '</div>' +
-          '<span class="itemTag' + (sel ? " selected" : "") + '">' + (sel ? "◆ NOW" : "PICK") + '</span>' +
-        '</div>' +
-        '<p class="itemDesc">' + escapeHtml(s.desc) + '</p>';
-      div.addEventListener("click", function() { setCurrent(s); });
-      div.addEventListener("keydown", function(e) {
-        if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setCurrent(s); }
-      });
-      els.list.appendChild(div);
+        '<div class="sidebar-item-name">' + s.name + '</div>' +
+        '<div class="sidebar-item-desc">' + s.desc + '</div>';
+      div.addEventListener("click", () => setCurrent(s));
+      container.appendChild(div);
     });
   }
 
-  function animateBtn(btn, cls) {
-    btn.classList.remove(cls);
-    void btn.offsetWidth;
-    btn.classList.add(cls);
-    btn.addEventListener("animationend", function() { btn.classList.remove(cls); }, { once: true });
-  }
-
-  els.openBtn.addEventListener("click",  function() { animateBtn(els.openBtn,  "pop"); openCurrent(); });
-  els.openBtn2.addEventListener("click", function() { animateBtn(els.openBtn2, "pop"); openCurrent(); });
-  els.openBtn3.addEventListener("click", function() { animateBtn(els.openBtn3, "pop"); openCurrent(); });
-  els.nextBtn.addEventListener("click",  function() { animateBtn(els.nextBtn,  "wiggle"); nextPick(); });
-
-  els.previewToggle.addEventListener("change", function(e) {
-    setPreviewEnabled(e.target.checked);
-    if (e.target.checked && current) loadPreview(current.url, current.name);
-    else { els.previewFrame.src = "about:blank"; hideFallback(); }
+  // ── Buttons ──
+  document.getElementById("openBtn").addEventListener("click", () => {
+    if (!current) return;
+    incTodayCount();
+    window.location.href = current.url;
   });
 
-  document.addEventListener("keydown", function(e) {
+  document.getElementById("nextBtn").addEventListener("click", () => {
+    setCurrent(popFromBag());
+  });
+
+  document.getElementById("saveBtn").addEventListener("click", () => {
+    if (current) saveForLater(current);
+  });
+
+  // ── Keyboard shortcuts ──
+  document.addEventListener("keydown", e => {
     const tag = (e.target && e.target.tagName || "").toLowerCase();
     if (tag === "input" || tag === "textarea") return;
-    if (e.key.toLowerCase() === "n") nextPick();
-    if (e.key.toLowerCase() === "o") openCurrent();
-    if (e.key.toLowerCase() === "p") {
-      const on = !getPreviewEnabled();
-      setPreviewEnabled(on);
-      if (on && current) loadPreview(current.url, current.name);
-      else { els.previewFrame.src = "about:blank"; hideFallback(); }
-    }
+    if (e.key.toLowerCase() === "o" && current) { incTodayCount(); window.location.href = current.url; }
+    if (e.key.toLowerCase() === "n") setCurrent(popFromBag());
+    if (e.key.toLowerCase() === "s" && current) saveForLater(current);
   });
 
-  // Init
-  renderTodayCount();
-  setPreviewEnabled(getPreviewEnabled());
-  nextPick();
+  // ── Init ──
+  renderSaved();
+  setCurrent(popFromBag());
 </script>
 </body>
 </html>
