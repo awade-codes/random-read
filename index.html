@@ -1,25 +1,138 @@
-<!doctype html>
-<html>
-  <head>
-    <meta charset="utf-8" />
-    <title>Random Read</title>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Reading Room</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #fafafa;
+            --text: #1a1a1a;
+            --accent: #3b82f6;
+        }
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+        }
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+            font-style: italic;
+        }
+        #counter {
+            font-size: 0.9rem;
+            opacity: 0.6;
+            margin-bottom: 2rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .status {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            font-weight: 500;
+        }
+        .button-group {
+            display: flex;
+            gap: 15px;
+        }
+        button {
+            padding: 12px 24px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.2s;
+        }
+        .btn-main {
+            background: var(--text);
+            color: white;
+        }
+        .btn-main:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .btn-alt {
+            background: transparent;
+            border: 1px solid #ddd;
+            color: var(--text);
+        }
+        .btn-alt:hover { background: #f0f0f0; }
+    </style>
+</head>
+<body>
+
+    <h1>Reading Room</h1>
+    <div id="counter">Today's Streak: <span id="count">0</span></div>
+    
+    <div class="status" id="status-text">Finding something mind-blowing...</div>
+
+    <div class="button-group">
+        <button id="open-btn" class="btn-main">Open Story</button>
+        <button id="refresh-btn" class="btn-alt">Try Another</button>
+    </div>
+
     <script>
-      const sites = [
-        "https://www.reddit.com/r/InternetIsBeautiful/",
-        "https://www.themarginalian.org/",
-        "https://fs.blog/",
-        "https://aeon.co/",
-        "https://nautil.us/",
-        "https://themillions.com/",
-        "https://pudding.cool/",
-        "https://www.atlasobscura.com/, 
-        "https://www.goodnewsnetwork.org/"];
-      const target = sites[Math.floor(Math.random() * sites.length)];
-      window.location.replace(target);
+        const sites = [
+            { name: "Atlas Obscura", url: "https://www.atlasobscura.com/random" }, // Opens a random weird place
+            { name: "The Marginalian", url: "https://www.themarginalian.org/" },
+            { name: "Aeon", url: "https://aeon.co/" },
+            { name: "Nautilus", url: "https://nautil.us/" },
+            { name: "Farnam Street", url: "https://fs.blog/blog/" },
+            { name: "The Pudding", url: "https://pudding.cool/" },
+            { name: "Reddit: Internet is Beautiful", url: "https://www.reddit.com/r/InternetIsBeautiful/" },
+            { name: "The Millions", url: "https://themillions.com/" },
+            { name: "Longform", url: "https://longform.org/" }
+        ];
+
+        let currentSite;
+
+        function pickSite() {
+            currentSite = sites[Math.floor(Math.random() * sites.length)];
+            document.getElementById('status-text').innerText = `Next up: ${currentSite.name}`;
+        }
+
+        function updateStreak() {
+            let streak = parseInt(localStorage.getItem('read_streak') || '0');
+            // Check if last read was today
+            const lastRead = localStorage.getItem('last_read_date');
+            const today = new Date().toDateString();
+            
+            if (lastRead === today) {
+                // Keep the current count
+            } else {
+                // If it's a new day, streak is usually 0 unless you want total counts
+                // For now, let's just make it a "Read Today" counter
+                streak = 0;
+            }
+            document.getElementById('count').innerText = streak;
+        }
+
+        function openSite() {
+            let streak = parseInt(localStorage.getItem('read_streak') || '0');
+            localStorage.setItem('read_streak', streak + 1);
+            localStorage.setItem('last_read_date', new Date().toDateString());
+            window.location.href = currentSite.url;
+        }
+
+        document.getElementById('open-btn').addEventListener('click', openSite);
+        document.getElementById('refresh-btn').addEventListener('click', pickSite);
+
+        // Run on load
+        pickSite();
+        updateStreak();
+
+        // Auto-redirect after 3 seconds if you want it to be hands-off:
+        // setTimeout(openSite, 3000); 
     </script>
-    <noscript>
-      <meta http-equiv="refresh" content="0;url=https://www.atlasobscura.com/" />
-    </noscript>
-  </head>
-  <body>Picking something interesting…</body>
+</body>
 </html>
