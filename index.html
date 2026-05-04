@@ -128,8 +128,12 @@
         document.getElementById('refresh-btn').addEventListener('click', pickSite);
 
         // Run on load
+        // Run on load
         pickSite();
         updateStreak();
+
+        // auto-open after a short delay
+        setTimeout(openSite, 1500);
 
         // Auto-redirect after 3 seconds if you want it to be hands-off:
         // setTimeout(openSite, 3000); 
